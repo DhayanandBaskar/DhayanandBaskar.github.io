@@ -1,276 +1,687 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>Dhayanand</title>
-
-    <!-- Bootstrap Core CSS -->
-    <link href="portfolio/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <link href="portfolio/css/landing-page.css" rel="stylesheet">
-
+    <meta charset="UTF-8">
+    <title>Dhayanand Baskar - Senior Backend Engineer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <!-- Custom Fonts -->
-    <link href="portfolio/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap"
+        rel="stylesheet"
+    >
+    <!-- Custom CSS -->
+    <style>
+        /* Custom Styles */
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #1F2937;
+            overflow-x: hidden;
+            background-color: #2f2e54;
+        }
+        /* Smooth Scrolling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1F2937;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4F46E5;
+            border-radius: 4px;
+        }
+        /* Sidebar Navigation */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 60px;
+            background-color: #1F2937;
+            padding-top: 20px;
+            transition: width 0.3s;
+            z-index: 1000;
+            overflow: hidden;
+        }
+        .sidebar:hover {
+            width: 240px;
+        }
+        .sidebar a {
+            padding: 15px 20px;
+            text-decoration: none;
+            font-size: 16px;
+            color: #D1D5DB;
+            display: flex;
+            align-items: center;
+            transition: background 0.3s, color 0.3s;
+        }
+        .sidebar a:hover {
+            background-color: #4F46E5;
+            color: #FFFFFF;
+        }
+        .sidebar a.active {
+            background-color: #4F46E5;
+            color: #FFFFFF;
+        }
+        .sidebar svg {
+            min-width: 24px;
+            margin-right: 16px;
+        }
+        /* Content Margin */
+        .content {
+            margin-left: 80px;
+            transition: margin-left 0.3s;
+        }
+        .sidebar:hover ~ .content {
+            margin-left: 240px;
+        }
+        /* Parallax Background */
+        .parallax {
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+        }
+        /* Header Styles */
+        #header {
+            background-image: url('https://source.unsplash.com/1600x900/?technology');
+            color: white;
+            padding: 200px 0 150px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+        }
+        #header h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            animation: fadeInDown 1s;
+            text-shadow: 2px 4px 6px rgba(0,0,0,0.5);
+        }
+        #header h3 {
+            font-weight: 300;
+            font-size: 1.5rem;
+            margin-top: 20px;
+            animation: fadeInUp 1s;
+            text-shadow: 2px 4px 6px rgba(0,0,0,0.5);
+        }
+        /* Floating Abstract Art */
+        .floating-art {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .floating-art svg {
+            position: absolute;
+            fill: rgba(79, 70, 229, 0.15);
+            animation: float 20s infinite;
+        }
+        .floating-art svg:nth-child(1) {
+            top: 10%;
+            left: 20%;
+            width: 100px;
+            animation-delay: 0s;
+        }
+        .floating-art svg:nth-child(2) {
+            top: 50%;
+            left: 70%;
+            width: 150px;
+            animation-delay: 5s;
+        }
+        .floating-art svg:nth-child(3) {
+            top: 80%;
+            left: 30%;
+            width: 80px;
+            animation-delay: 10s;
+        }
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+            100% { transform: translateY(0) rotate(360deg); }
+        }
+        /* Section Titles */
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 40px;
+            position: relative;
+            display: inline-block;
+            color: #FFFFFF;
+            text-shadow: 2px 4px 6px rgba(0,0,0,0.5);
+        }
+        .section-title::after {
+            content: '';
+            width: 80px;
+            height: 4px;
+            background-color: #F59E0B;
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            border-radius: 2px;
+        }
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* Vertical Timeline Styles */
+        .vertical-timeline {
+            position: relative;
+            margin-top: 40px;
+            padding-left: 2rem;
+            border-left: 2px solid #4F46E5;
+        }
+        .vertical-timeline-element {
+            position: relative;
+            margin-bottom: 50px;
+        }
+        .vertical-timeline-element::before {
+            content: '';
+            position: absolute;
+            left: -18px;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            background: #F59E0B;
+            border-radius: 50%;
+            border: 2px solid #4F46E5;
+        }
+        .vertical-timeline-content {
+            background: #1F2937;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+            color: #FFFFFF;
+        }
+        .vertical-timeline-element:hover .vertical-timeline-content {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.3);
+        }
+        /* Tooltip Styles */
+        .tooltip {
+            position: relative;
+            cursor: pointer;
+            color: #F59E0B;
+        }
+        .tooltip::after {
+            content: attr(data-tip);
+            position: absolute;
+            left: 50%;
+            bottom: 125%;
+            transform: translateX(-50%);
+            background: #1F2937;
+            color: #F59E0B;
+            padding: 8px 12px;
+            border-radius: 4px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s;
+        }
+        .tooltip:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+        /* Skill Bars */
+        .skill-bar {
+            margin-bottom: 25px;
+        }
+        .skill-bar h4 {
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #FFFFFF;
+        }
+        .skill-bar .progress-bar {
+            height: 20px;
+            background: #374151;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .skill-bar .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #F59E0B 0%, #EF4444 100%);
+            border-radius: 10px;
+            transition: width 1s;
+        }
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 60px;
+            }
+            .sidebar:hover {
+                width: 220px;
+            }
+            .sidebar a {
+                font-size: 0;
+            }
+            .sidebar a::before {
+                content: attr(data-title);
+                font-size: 16px;
+                display: block;
+                margin-left: 10px;
+            }
+            .content {
+                margin-left: 60px;
+            }
+            .sidebar:hover a {
+                font-size: 16px;
+            }
+            .sidebar:hover a::before {
+                content: '';
+            }
+            .sidebar:hover ~ .content {
+                margin-left: 220px;
+            }
+        }
+        @media (max-width: 768px) {
+            .vertical-timeline {
+                padding-left: 1rem;
+            }
+            .vertical-timeline::before {
+                left: -5px;
+            }
+            .vertical-timeline-element::before {
+                left: -14px;
+            }
+        }
+    </style>
 </head>
-
 <body>
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-fixed-top topnav" role="navigation">
-        <div class="container topnav">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand topnav" href="#">Dhayanand</a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="#about">About</a>
-                    </li>
-                    <li>
-                        <a href="#services">Projects</a>
-                    </li>
-                    <li>
-                        <a href="#contact">Education</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <a href="#header" class="active" data-title="Home">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="#D1D5DB">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M13 5v6h6" />
+            </svg>
+            <span class="ml-4">Home</span>
+        </a>
+        <a href="#profile" data-title="Profile">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="#D1D5DB">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 15c3.042 0 5.824 1.13 7.879 2.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span class="ml-4">Profile</span>
+        </a>
+        <a href="#employment" data-title="Experience">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="#D1D5DB">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m2 4H7m2-8h6m2-4H7m2 16h6" />
+            </svg>
+            <span class="ml-4">Experience</span>
+        </a>
+        <a href="#projects" data-title="Projects">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="#D1D5DB">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            <span class="ml-4">Projects</span>
+        </a>
+        <a href="#education" data-title="Education">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="#D1D5DB">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0v6" />
+            </svg>
+            <span class="ml-4">Education</span>
+        </a>
+        <a href="#skills" data-title="Skills">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="#D1D5DB">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.88 3.549L7.12 20.451" />
+            </svg>
+            <span class="ml-4">Skills</span>
+        </a>
     </nav>
 
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Floating Abstract Art -->
+        <div class="floating-art">
+            <svg viewBox="0 0 200 200">
+                <circle cx="100" cy="100" r="100"></circle>
+            </svg>
+            <svg viewBox="0 0 200 200">
+                <rect width="200" height="200"></rect>
+            </svg>
+            <svg viewBox="0 0 200 200">
+                <polygon points="100,0 200,200 0,200"></polygon>
+            </svg>
+        </div>
 
-    <!-- Header -->
-    <a name="about"></a>
-    <div class="intro-header">
-        <div class="container">
+        <!-- Header -->
+        <header id="header" class="parallax">
+            <h1>Dhayanand Baskar</h1>
+            <h3>Senior Backend Engineer | Ex-ThoughtWorks | Ex-Forto</h3>
+            <a href="#profile" class="mt-10 inline-block px-8 py-3 bg-yellow-500 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition duration-300">View Profile</a>
+        </header>
 
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="intro-message">
-                        <h1>Dhayanand Baskar</h1>
-                        <img class="img-responsive, profile" src="portfolio/img/profile2.jpg" alt="">
-                        <h3>Software Developer</h3>
-                        <h5>dhayanand.baskar@gmail.com</h5>
-                        <hr class="intro-divider">
-                        <ul class="list-inline intro-social-buttons">
+        <!-- Profile Section -->
+        <section id="profile" class="py-16 px-8 bg-gray-800">
+            <h2 class="section-title">Profile</h2>
+            <p class="mt-6 text-lg leading-relaxed text-gray-300">
+                Highly experienced and results-driven software engineer with over
+                10 years of expertise in architecting, developing, and optimizing
+                high-performance systems. Known for deep ownership, technical
+                mastery, and delivering impactful solutions across complex domains.
+                Specializes in <span class="tooltip" data-tip="A collection of independent computers that appears to its users as a single coherent system.">distributed systems</span>, database optimization, and large-scale replatforming efforts. Proven ability to mentor teams,
+                solve challenging technical problems, and lead transformative
+                initiatives. Currently seeking a Staff Engineer role to drive
+                innovation and technical excellence at scale.
+            </p>
+        </section>
+
+        <!-- Employment History -->
+        <section id="employment" class="bg-gray-900 py-16 px-8 parallax" style="background-image: url('https://source.unsplash.com/1600x900/?business');">
+            <h2 class="section-title">Employment History</h2>
+            <div class="vertical-timeline">
+                <!-- Personio -->
+                <div class="vertical-timeline-element">
+                    <div class="vertical-timeline-content">
+                        <h3 class="text-xl font-semibold text-yellow-500">Senior Backend Engineer, Personio</h3>
+                        <h5 class="text-sm text-gray-400 mb-4"><i>Berlin, Germany | June 2022 – Present</i></h5>
+                        <ul class="list-disc list-inside space-y-2 text-gray-300">
                             <li>
-                                <a target="_blank" href="https://github.com/DhayanandBaskar" class="btn btn-default btn-lg"><i class="fa fa-github fa-fw"></i> <span class="network-name">Github</span></a>
+                                <strong>Domain Replatforming and Quality Improvements:</strong>
+                                <ul class="list-disc list-inside ml-6 space-y-1">
+                                    <li>
+                                        <strong>Public Holiday Historization (Sep 2023 – Mar 2024):</strong> Delivered a launch date-based historization system for mid-market customers, overcoming challenges in performance and correctness within a legacy codebase.
+                                    </li>
+                                    <li>
+                                        Reduced 7,500+ lines of code through flow unification and simplification of the Holiday Calendar Service (HCS).
+                                    </li>
+                                    <li>
+                                        Resolved 17 customer-reported bugs, improving test coverage and reliability.
+                                    </li>
+                                    <li>
+                                        Led a Holiday Quality Initiative, decoupling domain logic from external dependencies, laying the foundation for scalable and maintainable systems.
+                                    </li>
+                                </ul>
                             </li>
                             <li>
-                                <a target="_blank" href="https://www.linkedin.com/in/DhayanandBaskar" class="btn btn-default btn-lg"><i class="fa fa-linkedin fa-fw"></i> <span class="network-name">Linkedin</span></a>
+                                <strong>Performance Optimization:</strong>
+                                <ul class="list-disc list-inside ml-6 space-y-1">
+                                    <li>
+                                        <strong>Absence Balance Request API (Mar – May 2024):</strong> Spearheaded a cross-team initiative that optimized the API, reducing P95 response times by 70% and P99 by 60%.
+                                    </li>
+                                    <li>
+                                        Introduced efficient database indexing, query batching, and read replica utilization.
+                                    </li>
+                                    <li>
+                                        Delivered sustainable, root-cause-driven solutions, impacting 10,000+ customers.
+                                    </li>
+                                </ul>
                             </li>
                             <li>
-                                <a target="_blank" href="https://dhayanandb.github.io/DhayanandBaskar.pdf" class="btn btn-default btn-lg"><i class="fa fa-file-pdf-o"></i> <span class="network-name">Resume</span></a>
+                                <strong>Technical Leadership and Mentorship:</strong>
+                                <ul class="list-disc list-inside ml-6 space-y-1">
+                                    <li>
+                                        Mentored junior engineers, onboarded team members into complex domains like HCS, and established a collaborative knowledge-sharing culture.
+                                    </li>
+                                    <li>
+                                        Provided clear, actionable code reviews that enhanced team output and code quality.
+                                    </li>
+                                </ul>
                             </li>
                         </ul>
-                        <h4 style="margin-top : 25px">Skills</h4>
-                        <div class="skills">
-                            <span class="label label-primary">Domain Driven Design</span>
-                            <span class="label label-primary">MicroServices</span>
-                            <span class="label label-primary">Distributed Systems</span>
-                            <span class="label label-primary">CI/CD</span>
-                        </div>
-                        <div class="skills">
-                            <span class="label label-primary">Algorithms</span>
-                            <span class="label label-primary">API Design</span>
-                            <span class="label label-primary">Data Intensive Applications</span>
-                        </div>
-                        <div class="skills">
-                            <span class="label label-primary">Event Driven Systems</span>
-                            <span class="label label-primary">Java</span>
-                            <span class="label label-primary">NodeJs</span>
-                            <span class="label label-primary">Javascript</span>
-                            <span class="label label-primary">Kotlin</span>
-                        </div>
+                    </div>
+                </div>
+                <!-- Forto GmbH -->
+                <div class="vertical-timeline-element">
+                    <div class="vertical-timeline-content">
+                        <h3 class="text-xl font-semibold text-yellow-500">Senior Backend Engineer, Forto GmbH</h3>
+                        <h5 class="text-sm text-gray-400 mb-4"><i>Berlin, Germany | September 2019 – May 2022</i></h5>
+                        <ul class="list-disc list-inside space-y-2 text-gray-300">
+                            <li>
+                                Automated external partner booking, reducing manual processes by 30%.
+                            </li>
+                            <li>
+                                Designed a transport planning system used across logistics teams, significantly enhancing capacity planning.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- ThoughtWorks -->
+                <div class="vertical-timeline-element">
+                    <div class="vertical-timeline-content">
+                        <h3 class="text-xl font-semibold text-yellow-500">Application Developer, ThoughtWorks</h3>
+                        <h5 class="text-sm text-gray-400 mb-4"><i>Bengaluru, India | December 2017 – September 2019</i></h5>
+                        <ul class="list-disc list-inside space-y-2 text-gray-300">
+                            <li>
+                                Led the Driver Incentive Program for Gojek, boosting driver retention by 20%.
+                            </li>
+                            <li>
+                                Improved navigation UX for drivers through geospatial analytics integration.
+                            </li>
+                            <li>
+                                Migrated monolithic applications to microservices for enhanced scalability and reliability.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Whatfix -->
+                <div class="vertical-timeline-element">
+                    <div class="vertical-timeline-content">
+                        <h3 class="text-xl font-semibold text-yellow-500">Software Engineer, Whatfix</h3>
+                        <h5 class="text-sm text-gray-400 mb-4"><i>Bengaluru, India | May 2017 – December 2017</i></h5>
+                        <ul class="list-disc list-inside space-y-2 text-gray-300">
+                            <li>
+                                Built a scalable analytics platform for tracking user engagement, enabling data-driven decisions.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Mphasis -->
+                <div class="vertical-timeline-element">
+                    <div class="vertical-timeline-content">
+                        <h3 class="text-xl font-semibold text-yellow-500">Software Developer, Mphasis</h3>
+                        <h5 class="text-sm text-gray-400 mb-4"><i>Pune, India | August 2014 – May 2017</i></h5>
+                        <ul class="list-disc list-inside space-y-2 text-gray-300">
+                            <li>
+                                Developed an order management system for Sprint, one of the largest U.S. telecom providers.
+                            </li>
+                            <li>
+                                Designed and implemented key ordering workflows, improving operational efficiency by 40%.
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
+        </section>
 
-        </div>
-        <!-- /.container -->
-
-    </div>
-    <!-- /.intro-header -->
-
-    <!-- Page Content -->
-
-    <a name="services"></a>
-    <div class="content-section-a">
-
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-5 col-sm-6">
-                    <hr class="section-heading-spacer">
-                    <div class="clearfix"></div>
-                    <h2 class="section-heading">Hackathon App</h2>
-                    <h4>Android</h4>
-                    <p class="lead">The Hackathon App is a one stop shop for all the upcoming hackathons that are about to take place. Its helps search for hackathons, have a detail view about it and also lets you bookmark them. You can share the upcoming hackathon event to your friends. You can have a widget for all the upcoming events.</p>
-                    <h5><a target="_blank" href="https://github.com/DhayanandBaskar/HackathonApp"><i class="fa fa-link fa-fw"></i> <span class="network-name">Click here to view the code</span></a></h5>
+        <!-- Projects Section -->
+        <section id="projects" class="py-16 px-8 bg-gray-800 parallax" style="background-image: url('https://source.unsplash.com/1600x900/?code');">
+            <h2 class="section-title">Key Projects</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
+                <!-- Project 1 -->
+                <div class="bg-gray-900 rounded-lg shadow-lg p-6 hover:shadow-xl transition duration-300">
+                    <h4 class="text-xl font-semibold mb-4 text-yellow-500">Absence Balance Optimization at Personio</h4>
+                    <p class="text-gray-300 leading-relaxed">
+                        Optimized API performance by addressing query bottlenecks, introducing batching, and leveraging read replicas. Delivered 3x faster response times, benefiting 10,000+ customers.
+                    </p>
                 </div>
-                <div class="col-lg-5 col-lg-offset-2 col-sm-6">
-                    <img class="img-responsive" src="portfolio/img/portfolio/hackathon_app.jpg" alt="">
+                <!-- Project 2 -->
+                <div class="bg-gray-900 rounded-lg shadow-lg p-6 hover:shadow-xl transition duration-300">
+                    <h4 class="text-xl font-semibold mb-4 text-yellow-500">Domain Replatforming (Personio)</h4>
+                    <p class="text-gray-300 leading-relaxed">
+                        Unified holiday processing logic across services, removing 7,500+ lines of redundant code, reducing complexity, and improving maintainability.
+                    </p>
                 </div>
-            </div>
-
-        </div>
-        <!-- /.container -->
-
-    </div>
-    <!-- /.content-section-a -->
-
-    <div class="content-section-b">
-
-        <div class="container">
-
-            <div class="row">
-                <div class="col-lg-5 col-lg-offset-1 col-sm-push-6  col-sm-6">
-                    <hr class="section-heading-spacer">
-                    <div class="clearfix"></div>
-                    <h2 class="section-heading">XYZ reader</h2>
-                    <h4>Android</h4>
-                    <p class="lead">This is a fully functional android app that follows material design guide lines and standards for Android Developer Nanodegree program. This project was highly evaluated by certified Udacity code reviewer and was graded as "Exceeds Specifications".</p>
-                    <h5><a target="_blank" href="https://github.com/DhayanandBaskar/XYZReader"><i class="fa fa-link fa-fw"></i> <span class="network-name">Click here to view the code</span></a></h5>
-                </div>
-                <div class="col-lg-5 col-sm-pull-6  col-sm-6">
-                    <img class="img-responsive" src="portfolio/img/portfolio/material.jpg" alt="">
+                <!-- Project 3 -->
+                <div class="bg-gray-900 rounded-lg shadow-lg p-6 hover:shadow-xl transition duration-300">
+                    <h4 class="text-xl font-semibold mb-4 text-yellow-500">Cross-Domain Calendar Integrations</h4>
+                    <p class="text-gray-300 leading-relaxed">
+                        Delivered seamless updates to system holiday calendars for multiple countries (e.g., Greece, Sweden), ensuring compliance and reliability across the platform.
+                    </p>
                 </div>
             </div>
+        </section>
 
-        </div>
-        <!-- /.container -->
-
-    </div>
-    <!-- /.content-section-b -->
-
-    <div class="content-section-a">
-
-        <div class="container">
-
-            <div class="row">
-                <div class="col-lg-5 col-sm-6">
-                    <hr class="section-heading-spacer">
-                    <div class="clearfix"></div>
-                    <h2 class="section-heading">Stock Hawk App</h2>
-                    <h4>Android</h4>
-                    <p class="lead">Stock Hawk gives us live stock market status and shows us the rise and fall of price as a graph.Stock Hawk is the fourth project in Udacity's Android Developer Nanodegree. The purpose of this project was to diagnose problems and practice improving apps.</p>
-                    <h5><a target="_blank" href="https://github.com/DhayanandBaskar/StockHawkApp"><i class="fa fa-link fa-fw"></i> <span class="network-name">Click here to view the code</span></a></h5>
+        <!-- Education Section -->
+        <section id="education" class="bg-gray-900 py-16 px-8 parallax" style="background-image: url('https://source.unsplash.com/1600x900/?education');">
+            <h2 class="section-title">Education & Certifications</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+                <!-- Education -->
+                <div>
+                    <h4 class="text-xl font-semibold mb-2 text-yellow-500">Bachelor of Technology (B.Tech.) in Information Technology</h4>
+                    <p class="text-gray-400"><i>Anna University Chennai – 2010–2014</i></p>
                 </div>
-                <div class="col-lg-5 col-lg-offset-2 col-sm-6">
-                    <img class="img-responsive" src="portfolio/img/portfolio/stockHawk.jpg" alt="">
-                </div>
-            </div>
-
-        </div>
-        <!-- /.container -->
-
-    </div>
-    <!-- /.content-section-a -->
-
-    <!-- /.content-section-b -->
-    <a name="contact"></a>
-    <div class="banner">
-
-        <div class="container">
-
-            <div class="row">
-                <div class="col-lg-8">
-                    <h2 class="text-info">Education</h2>
-                    <h3>Advanced Distributed Systems Design using SOA & DDD</h3>
-                    <h3>Android Developer Nanodegree by Google - Udacity</h3>
-                    <h3>Front-End Web Developer Nanodegree Co-created by At&t, Google, Github, Hackreactor - Udacity</h3>
-                    <h3>Saveetha Engineering College, Anna University Bachelor of Technology (B.Tech.) IT, Information Technology</h3>
-                </div>
-                <div class="col-lg-4 text-center">
-                    <h4 style="margin-top: 30%">“The master has failed more times than the beginner has even tried.”</h4>
-                    <h6> ― Stephen McCranie</h6>
-                </div>
-            </div>
-
-        </div>
-        <!-- /.container -->
-
-    </div>
-    <!-- /.banner -->
-
-    <div class="content-section-b">
-
-        <div class="container">
-
-            <div class="row">
-                <div class="col-lg-5 col-lg-offset-1 col-sm-push-6  col-sm-6">
-                    <h2 class="section-heading">Android Certification</h2>
-                    <img class="img-responsive" src="portfolio/img/AndroidCertificate.PNG" alt="">
-                </div>
-                <div class="col-lg-5 col-sm-pull-6 col-sm-6">
-                    <h2 class="section-heading">Distributed Systems Design</h2>
-                    <img class="img-responsive" src="portfolio/img/ADSDCertificate.png" alt="">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-5">
-                    <h2 class="section-heading">FrontEnd Certification</h2>
-                    <img class="img-responsive" src="portfolio/img/FrontEndCertificate.PNG" alt="">
-                </div>
-            </div>
-        </div>
-        <!-- /.container -->
-
-    </div>
-    <!-- /.content-section-b -->
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <ul class="list-inline">
+                <!-- Certifications -->
+                <div>
+                    <h4 class="text-xl font-semibold mb-4 text-yellow-500">Certifications</h4>
+                    <ul class="list-disc list-inside space-y-2 text-gray-300">
                         <li>
-                            <a href="#">Home</a>
+                            <strong>Advanced Distributed Systems Design using SOA & DDD</strong><br />
+                            <i class="text-gray-400">Particular Software – Issued May 2020</i>
                         </li>
-                        <li class="footer-menu-divider">&sdot;</li>
                         <li>
-                            <a href="#about">About</a>
-                        </li>
-                        <li class="footer-menu-divider">&sdot;</li>
-                        <li>
-                            <a href="#services">Projects</a>
-                        </li>
-                        <li class="footer-menu-divider">&sdot;</li>
-                        <li>
-                            <a href="#contact">Education</a>
+                            <strong>Google Scholarship for Android Nanodegree</strong><br />
+                            <i class="text-gray-400">Google – Issued January 2016</i>
                         </li>
                     </ul>
-                    <p class="copyright text-muted small">Copyright &copy; Dhayanand.com 2021. All Rights Reserved</p>
                 </div>
             </div>
-        </div>
-    </footer>
+        </section>
 
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
+        <!-- Skills Section -->
+        <section id="skills" class="py-16 px-8 bg-gray-800">
+            <h2 class="section-title">Skills</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+                <!-- Skill Bars -->
+                <div>
+                    <!-- Skill 1 -->
+                    <div class="skill-bar">
+                        <h4>Kotlin</h4>
+                        <div class="progress-bar mt-2">
+                            <div class="progress" style="width: 95%;"></div>
+                        </div>
+                    </div>
+                    <!-- Skill 2 -->
+                    <div class="skill-bar">
+                        <h4>Java</h4>
+                        <div class="progress-bar mt-2">
+                            <div class="progress" style="width: 90%;"></div>
+                        </div>
+                    </div>
+                    <!-- Skill 3 -->
+                    <div class="skill-bar">
+                        <h4>Python</h4>
+                        <div class="progress-bar mt-2">
+                            <div class="progress" style="width: 85%;"></div>
+                        </div>
+                    </div>
+                    <!-- Skill 4 -->
+                    <div class="skill-bar">
+                        <h4>Spring Boot</h4>
+                        <div class="progress-bar mt-2">
+                            <div class="progress" style="width: 90%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Additional Skills -->
+                <div>
+                    <!-- Skill 5 -->
+                    <div class="skill-bar">
+                        <h4>Distributed Systems</h4>
+                        <div class="progress-bar mt-2">
+                            <div class="progress" style="width: 95%;"></div>
+                        </div>
+                    </div>
+                    <!-- Skill 6 -->
+                    <div class="skill-bar">
+                        <h4>Database Optimization</h4>
+                        <div class="progress-bar mt-2">
+                            <div class="progress" style="width: 90%;"></div>
+                        </div>
+                    </div>
+                    <!-- Other Skills -->
+                    <p class="mt-8 text-gray-300">
+                        Event-Driven Architecture, Domain-Driven Design (DDD), Microservices, Kubernetes, Docker, CI/CD, Mentorship, Technical Leadership
+                    </p>
+                </div>
+            </div>
+        </section>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
+        <!-- Footer -->
+        <footer class="bg-gray-900 text-gray-400 py-8 text-center">
+            <p>© 2024 Dhayanand Baskar. All Rights Reserved.</p>
+        </footer>
 
+        <!-- Back to Top Button -->
+        <a
+            href="#header"
+            id="back-to-top"
+            class="fixed bottom-8 right-8 bg-yellow-500 text-white p-3 rounded-full shadow-lg hover:bg-yellow-600 transition duration-300"
+            title="Back to Top"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+            </svg>
+        </a>
+    </div>
+
+    <!-- Alpine.js for Interactivity -->
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2" defer></script>
+    <!-- Custom JS -->
+    <script>
+        // Active Link Highlighting
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.sidebar a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 80;
+                if (pageYOffset >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Back to Top Button Visibility
+        const backToTopButton = document.getElementById('back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 500) {
+                backToTopButton.classList.remove('hidden');
+                backToTopButton.classList.add('flex');
+            } else {
+                backToTopButton.classList.remove('flex');
+                backToTopButton.classList.add('hidden');
+            }
+        });
+
+        // Smooth Scroll for Back to Top
+        backToTopButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
 </body>
-
 </html>
