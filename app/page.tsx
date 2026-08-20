@@ -95,7 +95,7 @@ export default function Home() {
             </div>
             <div>
               <h3><span>03</span> Forto</h3>
-              <strong className="impact-word">Real-time tracking</strong>
+              <strong className="impact-word">End-to-end transport tracking</strong>
               <p>built shipment event-ingestion pipelines that stayed correct when third-party updates arrived late, duplicated, or out of order</p>
             </div>
           </section>

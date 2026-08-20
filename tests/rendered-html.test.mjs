@@ -33,7 +33,7 @@ test("server-renders the complete resume", async () => {
   assert.match(html, /Building high-throughput distributed systems/);
   assert.match(html, /Thoughtworks \/ Grab/);
   assert.match(html, /2M\+/);
-  assert.match(html, /Real-time tracking/);
+  assert.match(html, /End-to-end transport tracking/);
   assert.match(html, /How I lead/i);
   assert.match(html, /Dhayanand-Baskar-Resume\.pdf/);
   assert.doesNotMatch(html, /codex-preview|SkeletonPreview|Building your site/);
