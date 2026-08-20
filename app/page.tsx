@@ -1,16 +1,18 @@
 "use client";
 
 const personioHighlights = [
-  "Led backend architecture and implementation for absence management, powering balance, policy, holiday, payroll, calendar, and reporting workflows across Personio’s HR platform.",
+  "Led backend architecture and implementation for absence management, powering balance, policy, holiday, payroll, calendar, and reporting workflows across Personio’s multi-tenant HR platform.",
   "Reduced Absence Balance API latency by ~70% at P95 and ~60% at P99 through query optimization, batching, workload isolation, and database-level tuning—eliminating timeout failures for a high-impact customer.",
-  "Designed and operationalized a balance materialization system across ~35K companies, enabling analytics workloads while reducing expensive real-time computation and improving data consistency by 10×.",
-  "Strengthened event-driven data pipelines with idempotent processing, retry-safe synchronization, observability, operational runbooks, and reliable downstream payroll and calendar integrations.",
+  "Led the design and delivery of a balance materialization system covering 2M+ employee balances, replacing expensive real-time aggregation with precomputed, reporting-ready data that was faster, more predictable, and easier to reconcile.",
+  "Strengthened event-driven data pipelines with idempotent consumers, retry-safe synchronization, reconciliation, observability, and reliable downstream payroll and calendar integrations.",
+  "Drove technical initiatives from design through rollout: aligning cross-functional stakeholders, reviewing architecture, mentoring engineers, defining operational runbooks, and supporting production incidents.",
 ];
 
 const fortoHighlights = [
-  "Built scalable backend services for transportation management, real-time shipment tracking, and external logistics partner booking.",
-  "Modeled long-running transport workflows as event-driven state machines, safely processing delayed, duplicated, and out-of-order updates from third-party systems.",
-  "Used domain-driven design and event storming with logistics leaders to create a scalable Transport Plan model and incrementally automate partner booking workflows.",
+  "Built core backend services for transportation management, real-time shipment visibility, and external logistics partner booking.",
+  "Designed event-ingestion flows that normalized third-party tracking updates and remained correct when events arrived late, duplicated, or out of order.",
+  "Modeled multi-step partner bookings as long-running, event-driven state machines with explicit transitions, retry policies, reconciliation, and failure recovery.",
+  "Used domain-driven design and event storming with logistics leaders to create a scalable Transport Plan model and incrementally automate operational workflows.",
 ];
 
 function ExperienceRole({
@@ -51,9 +53,9 @@ export default function Home() {
         <div className="availability"><span className="status-dot" /><span>Berlin · Open to senior backend opportunities</span></div>
         <div className="toolbar-actions">
           <a className="secondary-button" href="mailto:dhayanand.baskar@gmail.com">Let&apos;s talk</a>
-          <button className="download-button" onClick={() => window.print()} aria-label="Open print dialog to save this resume as PDF">
-            <span aria-hidden="true">↓</span> Export PDF
-          </button>
+          <a className="download-button" href="/Dhayanand-Baskar-Resume.pdf" download="Dhayanand-Baskar-Resume.pdf" aria-label="Download Dhayanand Baskar resume as a PDF">
+            <span aria-hidden="true">↓</span> Download PDF
+          </a>
         </div>
       </nav>
 
@@ -64,6 +66,7 @@ export default function Home() {
             <div className="identity">
               <p className="eyebrow">Senior Software Engineer · Backend &amp; Distributed Systems</p>
               <h1>Dhayanand<br />Baskar</h1>
+              <p className="hero-statement">Building high-throughput distributed systems that stay fast, reliable, and correct while serving millions of users.</p>
             </div>
             <div className="contact-block">
               <p>Berlin, Germany</p>
@@ -76,14 +79,25 @@ export default function Home() {
 
           <section className="profile-section ruled-section">
             <SectionTitle number="01">Profile</SectionTitle>
-            <p className="lead">Software engineer with 12+ years of experience designing and scaling distributed, high-throughput systems across HR technology, logistics, mobility, and SaaS. Translates complex domains into resilient platforms—and turns performance, consistency, and reliability constraints into measurable business outcomes.</p>
+            <p className="lead">Software engineer with 12+ years of experience designing and scaling distributed, high-throughput systems across HR technology, logistics, mobility, and SaaS. Combines deep system-design fundamentals with hands-on delivery—from domain modeling and API design to data partitioning, asynchronous workflows, production reliability, and performance optimization. Translates complex domains into resilient platforms and measurable business outcomes.</p>
           </section>
 
-          <section className="impact-strip" aria-label="Career highlights">
-            <div><strong>12+</strong><span>years building<br />production systems</span></div>
-            <div><strong>~70%</strong><span>lower P95 latency<br />on a critical API</span></div>
-            <div><strong>~35K</strong><span>companies served by<br />materialized balances</span></div>
-            <div><strong>10×</strong><span>better data<br />consistency</span></div>
+          <section className="impact-strip" aria-label="Selected systems Dhayanand built or led">
+            <div>
+              <h3><span>01</span> Thoughtworks / Grab</h3>
+              <strong>3B+</strong>
+              <p>rides completed across Southeast Asia at Jan 2019 platform scale; built real-time driver order assignment and lifecycle systems</p>
+            </div>
+            <div>
+              <h3><span>02</span> Personio</h3>
+              <strong>2M+</strong>
+              <p>employee balances handled by the reporting materialization platform I led</p>
+            </div>
+            <div>
+              <h3><span>03</span> Forto</h3>
+              <strong className="impact-word">Real-time tracking</strong>
+              <p>built shipment event-ingestion pipelines that stayed correct when third-party updates arrived late, duplicated, or out of order</p>
+            </div>
           </section>
 
           <div className="page-grid">
@@ -97,7 +111,7 @@ export default function Home() {
               <SectionTitle number="03">Core expertise</SectionTitle>
               <div className="skill-group">
                 <h3>Architecture</h3>
-                <p>Distributed Systems<br />Event-Driven Architecture<br />Microservices<br />Domain-Driven Design<br />State Machines<br />REST APIs</p>
+                <p>Distributed Systems<br />Event-Driven Architecture<br />Microservices · SOA<br />Domain-Driven Design<br />State Machines · REST APIs</p>
               </div>
               <div className="skill-group">
                 <h3>Languages</h3>
@@ -108,8 +122,12 @@ export default function Home() {
                 <p>PostgreSQL · MySQL<br />Oracle · MongoDB<br />AWS · Kubernetes<br />Messaging · CI/CD</p>
               </div>
               <div className="skill-group">
+                <h3>Scale patterns</h3>
+                <p>Sharding · Partitioning<br />Caching · Materialization<br />Idempotency · Retries<br />Eventual Consistency<br />Schema Evolution</p>
+              </div>
+              <div className="skill-group">
                 <h3>Engineering</h3>
-                <p>Performance Tuning<br />Reliability · Observability<br />Incident Response<br />Technical Leadership<br />Mentoring</p>
+                <p>Performance Tuning<br />Reliability · Observability<br />Automated Testing<br />Incident Response<br />Technical Leadership<br />Mentoring · Design Reviews</p>
               </div>
             </aside>
           </div>
@@ -126,14 +144,15 @@ export default function Home() {
             <section className="career-column">
               <SectionTitle number="04">Earlier experience</SectionTitle>
               <ExperienceRole
-                company="Thoughtworks"
+                company="Thoughtworks / Grab"
                 title="Fullstack Software Engineer"
                 period="Dec 2017 — Sep 2019"
                 location="Bengaluru"
                 highlights={[
-                  "Built Android and backend capabilities for Gojek’s driver marketplace, supporting real-time order delivery and the assignment lifecycle from offer through acceptance, rejection, and completion.",
-                  "Led the Driver Incentive initiative, improved driver navigation experiences, and contributed to Google ride-hailing integration on operationally critical systems.",
-                  "Collaborated across product, mobile, and platform teams in a high-volume marketplace where latency and service reliability directly affected drivers and customers.",
+                  "Worked on Grab’s driver team as the platform crossed 3B rides across Southeast Asia in January 2019; built Android and backend capabilities for real-time order delivery and the assignment lifecycle from offer through acceptance, rejection, and completion.",
+                  "Led the Driver Incentive initiative across product and engineering, translating complex incentive rules into driver-facing experiences and supporting microservices.",
+                  "Improved driver navigation flows and contributed to Google ride-hailing integration, coordinating changes across Android, backend APIs, and external systems.",
+                  "Worked in a high-volume marketplace where low-latency dispatch, fault tolerance, and service reliability directly affected drivers, customers, and marketplace liquidity.",
                 ]}
               />
               <ExperienceRole
@@ -142,8 +161,9 @@ export default function Home() {
                 period="May 2017 — Dec 2017"
                 location="Bengaluru"
                 highlights={[
-                  "Developed an analytics platform for measuring engagement with Whatfix’s SaaS onboarding and interactive guidance products.",
-                  "Partnered across teams to deliver scalable, algorithm-driven product capabilities and data-backed usage insights.",
+                  "Developed an analytics platform for collecting, processing, and presenting engagement data from Whatfix’s SaaS onboarding and interactive guidance products.",
+                  "Built full-stack capabilities spanning instrumentation, backend APIs, data aggregation, and user-facing reporting for product-usage insights.",
+                  "Partnered across teams to deliver scalable, algorithm-driven product features with maintainable interfaces and testable business logic.",
                 ]}
               />
               <ExperienceRole
@@ -152,7 +172,8 @@ export default function Home() {
                 period="Jul 2014 — May 2017"
                 location="Pune"
                 highlights={[
-                  "Developed a full-stack telecom ordering system for Sprint, contributing across enterprise workflows, backend services, data access, and user-facing capabilities.",
+                  "Developed a full-stack telecom ordering system for Sprint, contributing across order capture, validation, enterprise workflows, backend service orchestration, relational data access, and user-facing capabilities.",
+                  "Delivered features within a large enterprise codebase, collaborating with distributed teams and balancing new functionality with compatibility, testing, and production stability.",
                 ]}
               />
             </section>
@@ -165,6 +186,7 @@ export default function Home() {
                 <div><span>02</span><p><strong>Make events safe</strong>Use idempotency, deduplication, versioning, retries, and reconciliation for delayed or out-of-order delivery.</p></div>
                 <div><span>03</span><p><strong>Design for operations</strong>Build in SLOs, metrics, traces, alerting, runbooks, failure isolation, and controlled degradation.</p></div>
                 <div><span>04</span><p><strong>Evolve with evidence</strong>Profile before optimizing; use caching, precomputation, batching, indexes, and workload separation deliberately.</p></div>
+                <div><span>05</span><p><strong>Route and rebalance</strong>Use shard metadata, virtual partitions, controlled data movement, and dual-read or dual-write migrations to scale without downtime.</p></div>
               </div>
             </aside>
           </div>
@@ -173,27 +195,43 @@ export default function Home() {
             <section>
               <SectionTitle number="06">Education</SectionTitle>
               <div className="credential">
-                <h3>Bachelor of Information Technology</h3>
-                <p>Anna University · Chennai</p>
+                <div>
+                  <h3>Bachelor of Information Technology</h3>
+                  <p>Anna University · Chennai</p>
+                </div>
                 <time>2010 — 2014</time>
               </div>
             </section>
             <section>
               <SectionTitle number="07">Advanced study</SectionTitle>
               <div className="credential">
-                <h3>Algorithms</h3>
-                <p>Princeton University · 2018 — 2019</p>
+                <div>
+                  <h3>Algorithms</h3>
+                  <p>Princeton University</p>
+                </div>
+                <time>2018 — 2019</time>
               </div>
               <div className="credential compact">
-                <h3>Advanced Distributed Systems Design using SOA &amp; DDD</h3>
-                <p>Particular Software · 2020</p>
+                <div>
+                  <h3>Advanced Distributed Systems Design</h3>
+                  <p>SOA &amp; DDD · Particular Software</p>
+                </div>
+                <time>2020</time>
               </div>
             </section>
           </div>
 
+          <section className="leadership-band">
+            <SectionTitle number="08">How I lead</SectionTitle>
+            <div className="leadership-items">
+              <p><strong>Set direction</strong>Turn ambiguous domains into clear boundaries, design documents, API contracts, and phased technical roadmaps.</p>
+              <p><strong>Raise the bar</strong>Use design reviews, pragmatic testing, code reviews, and mentoring to improve both systems and engineering judgment.</p>
+              <p><strong>Ship safely</strong>Prefer observable, reversible rollouts with migration plans, compatibility guarantees, measurable SLOs, and explicit ownership.</p>
+            </div>
+          </section>
+
           <footer className="resume-footer">
-            <p>Building systems that stay fast, correct, and understandable as they scale.</p>
-            <span>Berlin · 2026</span>
+            <span>Dhayanand Baskar · Berlin · 2026</span>
           </footer>
         </article>
       </div>
