@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Designing a Reliable ATM Operations System — Dhayanand Baskar</title>
+    <meta name="description" content="A structured system-design walkthrough for ATM telemetry, refill and repair tasks, agent assignment, concurrency, and idempotency." />
+    <link rel="icon" href="../../favicon.svg" />
+    <link rel="stylesheet" href="../blog.css" />
+  </head>
+  <body>
+    <main class="article-page">
+      <nav class="blog-nav" aria-label="Article navigation">
+        <a class="blog-brand" href="../../index.html">Dhayanand Baskar</a>
+        <a href="../index.html">← All articles</a>
+      </nav>
+
+      <header class="article-header">
+        <p class="eyebrow">System design</p>
+        <h1>Designing a Reliable ATM Operations System</h1>
+        <p class="article-deck">A simple, structured design for ATM telemetry, maintenance tasks, agent assignment, concurrency, and failure recovery.</p>
+      </header>
+
+      <article class="article-body">
+        <p>I would design it as <strong>one stateless ATM Operations application, one PostgreSQL database, one background worker, and an external notification provider</strong>. No orchestrator, separate User Service, ATM Tracker, Task Service, SNS or SQS in the initial design.</p>
+
+        <p>The point of the interview would be to make the requirements, behaviours, APIs, data model and concurrency rules unmistakably clear before discussing extensions.</p>
+
+        <h2>1. Clarify the problem</h2>
+
+        <p>I would begin with these questions:</p>
+
+        <ul>
+          <li>Does an ATM report only its total cash, or cash by currency and denomination?</li>
+          <li>What conditions create a task: low cash, hardware error and missed heartbeat?</li>
+          <li>Can an ATM have a refill and repair task simultaneously?</li>
+          <li>Is assignment automatic or performed by a manager?</li>
+          <li>Does an agent handle only one active task?</li>
+          <li>What proves completion: the agent’s confirmation, or subsequent ATM telemetry?</li>
+          <li>How frequently do ATMs report?</li>
+          <li>Is routing explicitly out of scope?</li>
+          <li>Do we design only for five ATMs, while leaving a path to future growth?</li>
+        </ul>
+
+        <p>I wouldn’t need to know the word “cassette.” If denominations matter, the telemetry can simply contain:</p>
+
+        <pre><code>{
+  "cash": [
+    { "currency": "GBP", "denomination": 10, "noteCount": 100 },
+    { "currency": "GBP", "denomination": 20, "noteCount": 200 }
+  ]
+}</code></pre>
+
+        <h2>2. Functional requirements</h2>
+
+        <p>After receiving answers, I would write these as explicit system behaviours:</p>
+
+        <ol>
+          <li>ATMs periodically report operational status, cash inventory and errors.</li>
+          <li>Managers can view each ATM’s latest status, cash and active tasks.</li>
+          <li>The system creates a refill task when the configured cash rule is violated.</li>
+          <li>The system creates a repair task for an ATM error or missed heartbeat.</li>
+          <li>The system must not create a duplicate active task for the same ATM and task type.</li>
+          <li>The system automatically assigns an unassigned task to an available agent.</li>
+          <li>An agent can fetch, acknowledge, start and complete their assigned task.</li>
+          <li>An agent cannot have more than one active assignment.</li>
+          <li>Only the assigned agent or a manager may modify a task.</li>
+          <li>The system notifies an agent after assignment.</li>
+          <li>Task completion is recorded and optionally verified using subsequent ATM telemetry.</li>
+          <li>Route optimization is out of scope.</li>
+        </ol>
+
+        <h2>3. Non-functional requirements</h2>
+
+        <p>I would propose numbers and ask the interviewer to confirm them:</p>
+
+        <ul>
+          <li>Five ATMs, ten agents, one heartbeat every five minutes.</li>
+          <li>Low-cash/error tasks created within 30 seconds of receiving telemetry.</li>
+          <li>An ATM becomes <code>OFFLINE</code> after two missed heartbeats—approximately ten minutes.</li>
+          <li>Dashboard reflects accepted telemetry within five seconds.</li>
+          <li>Strong consistency for task creation, assignment and state transitions.</li>
+          <li>Eventual consistency is acceptable for dashboard presentation and notifications.</li>
+          <li>Accepted tasks must survive application restarts.</li>
+          <li>Retried telemetry and commands must be idempotent.</li>
+          <li>99.9% availability is sufficient.</li>
+          <li>ATM devices require device credentials; employees require RBAC.</li>
+          <li>Every assignment and task transition must be auditable.</li>
+        </ul>
+
+        <h3>Capacity</h3>
+
+        <p>Five heartbeats every five minutes is:</p>
+
+        <pre><code>5 / 300 = 0.017 requests per second</code></pre>
+
+        <p>Even 5,000 ATMs would average only about 17 heartbeat requests per second. Therefore, a stateless application and PostgreSQL are comfortably sufficient. I would run two instances for availability, not because throughput demands it.</p>
+
+        <h2>4. APIs</h2>
+
+        <pre><code>POST /v1/atms/{atmId}/telemetry
+GET  /v1/atms
+GET  /v1/atms/{atmId}
+GET  /v1/tasks?status=&amp;atmId=&amp;assigneeId=
+GET  /v1/agents/me/tasks?status=ACTIVE
+POST /v1/tasks/{taskId}/acknowledge
+POST /v1/tasks/{taskId}/start
+POST /v1/tasks/{taskId}/complete
+POST /v1/tasks/{taskId}/assign</code></pre>
+
+        <p>Example telemetry:</p>
+
+        <pre><code>{
+  "eventId": "atm-42-telemetry-901",
+  "sequenceNumber": 901,
+  "observedAt": "2026-08-21T10:30:00Z",
+  "deviceStatus": "WORKING",
+  "cash": [
+    {
+      "currency": "GBP",
+      "denomination": 20,
+      "noteCount": 100
+    }
+  ],
+  "errors": []
+}</code></pre>
+
+        <p>Example completion:</p>
+
+        <pre><code>{
+  "commandId": "completion-781",
+  "expectedVersion": 4,
+  "outcome": "SUCCESS",
+  "notes": "ATM refilled and tested"
+}</code></pre>
+
+        <h2>5. Data model</h2>
+
+        <h3><code>atm</code></h3>
+
+        <pre><code>id
+location
+operational_status
+cash_status
+last_seen_at
+last_sequence_number
+version</code></pre>
+
+        <p><code>operational_status</code> and <code>cash_status</code> should be separate. An ATM can be operational but low on cash.</p>
+
+        <h3><code>atm_cash</code></h3>
+
+        <pre><code>atm_id
+currency
+denomination
+note_count
+observed_at</code></pre>
+
+        <p>Unique key:</p>
+
+        <pre><code>(atm_id, currency, denomination)</code></pre>
+
+        <h3><code>telemetry_event</code></h3>
+
+        <pre><code>atm_id
+device_event_id
+sequence_number
+received_at
+payload</code></pre>
+
+        <p>Unique key:</p>
+
+        <pre><code>(atm_id, device_event_id)</code></pre>
+
+        <h3><code>task</code></h3>
+
+        <pre><code>id
+atm_id
+type                 REFILL | REPAIR
+status               CREATED | ASSIGNED | ACKNOWLEDGED |
+                     IN_PROGRESS | PENDING_VERIFICATION |
+                     COMPLETED | CANCELLED
+assignee_id
+trigger_event_id
+created_at
+acknowledged_at
+completed_at
+version</code></pre>
+
+        <h3><code>agent</code></h3>
+
+        <pre><code>id
+name
+status</code></pre>
+
+        <p>I would initially put <code>assignee_id</code> directly on the task. A separate assignment table is unnecessary unless assignment history is required.</p>
+
+        <h2>6. Architecture</h2>
+
+        <pre><code>flowchart LR
+    ATM["ATM devices"] --&gt;|"Heartbeat and telemetry"| API
+    WEB["Manager dashboard"] --&gt;|"View ATMs and tasks"| API
+    MOBILE["Agent mobile app"] --&gt;|"Fetch, acknowledge and complete"| API
+
+    subgraph BACKEND["ATM Operations application"]
+        API["Stateless REST API&lt;br/&gt;authentication + RBAC"]
+        WORKER["Background worker&lt;br/&gt;offline detection&lt;br/&gt;rules + assignment"]
+    end
+
+    API &lt;--&gt; DB[("PostgreSQL&lt;br/&gt;ATMs • cash • tasks • agents")]
+    WORKER &lt;--&gt; DB
+    WORKER --&gt;|"Assignment notification"| PUSH["Push notification provider"]
+    PUSH --&gt; MOBILE</code></pre>
+
+        <p>The API and worker can use the same codebase and deployment. They are logical components, not independent microservices.</p>
+
+        <h2>7. Walk through the critical flow</h2>
+
+        <h3>ATM telemetry to task creation</h3>
+
+        <ol>
+          <li>The ATM sends telemetry with an <code>eventId</code> and monotonically increasing <code>sequenceNumber</code>.</li>
+          <li>The application authenticates the ATM.</li>
+          <li>In one database transaction:
+            <ul>
+              <li>Insert the telemetry event.</li>
+              <li>If the event already exists, return the previous success.</li>
+              <li>Ignore an older sequence number.</li>
+              <li>Update the current ATM state and cash inventory.</li>
+              <li>Evaluate refill and repair rules.</li>
+              <li>Attempt to create the appropriate task.</li>
+            </ul>
+          </li>
+          <li>Commit.</li>
+          <li>An assignment worker finds the newly created task and an available agent.</li>
+          <li>It assigns them atomically.</li>
+          <li>The notification provider alerts the agent.</li>
+          <li>The mobile application fetches the authoritative task from the API.</li>
+        </ol>
+
+        <p>The push notification is only a hint. Losing it does not lose the task.</p>
+
+        <h3>Missed heartbeat</h3>
+
+        <p>A background worker periodically checks:</p>
+
+        <pre><code>last_seen_at &lt; now() - 10 minutes</code></pre>
+
+        <p>It marks the ATM offline and attempts to create a repair task using the same database uniqueness rule.</p>
+
+        <h2>8. Robust idempotency and concurrency</h2>
+
+        <p>This is where I would do the main technical deep dive.</p>
+
+        <h3>Duplicate delivery</h3>
+
+        <p>A retried telemetry event is deduplicated by:</p>
+
+        <pre><code>UNIQUE (atm_id, device_event_id)</code></pre>
+
+        <p>This is message idempotency.</p>
+
+        <h3>Duplicate business task</h3>
+
+        <p>A partial unique constraint prevents multiple active tasks:</p>
+
+        <pre><code>CREATE UNIQUE INDEX one_active_task_per_atm_type
+ON task (atm_id, type)
+WHERE status IN (
+  'CREATED',
+  'ASSIGNED',
+  'ACKNOWLEDGED',
+  'IN_PROGRESS',
+  'PENDING_VERIFICATION'
+);</code></pre>
+
+        <p>This is a business invariant. It is different from event deduplication.</p>
+
+        <p>Two application instances may simultaneously attempt to create the same task. One insert succeeds; the other conflicts and safely returns the existing task. There is no read-then-insert race.</p>
+
+        <h3>One task per agent</h3>
+
+        <p>Another partial unique constraint protects assignment:</p>
+
+        <pre><code>CREATE UNIQUE INDEX one_active_task_per_agent
+ON task (assignee_id)
+WHERE assignee_id IS NOT NULL
+  AND status IN (
+    'ASSIGNED',
+    'ACKNOWLEDGED',
+    'IN_PROGRESS'
+  );</code></pre>
+
+        <p>The assignment worker can use <code>FOR UPDATE SKIP LOCKED</code> to claim tasks and agents concurrently, with the constraint as the final protection.</p>
+
+        <h3>Completion validation</h3>
+
+        <pre><code>UPDATE task
+SET status = 'COMPLETED',
+    completed_at = NOW(),
+    version = version + 1
+WHERE id = :task_id
+  AND assignee_id = :authenticated_agent
+  AND status IN ('ACKNOWLEDGED', 'IN_PROGRESS')
+  AND version = :expected_version;</code></pre>
+
+        <p>If zero rows are updated, the request is stale, unauthorized or an invalid transition. A unique <code>commandId</code> makes retries return the original outcome.</p>
+
+        <h2>9. Failure behaviour</h2>
+
+        <ul>
+          <li>Application instance fails: another instance handles requests.</li>
+          <li>ATM times out waiting: it retries using the same <code>eventId</code>.</li>
+          <li>Assignment worker fails: the unassigned task remains durable in PostgreSQL.</li>
+          <li>Notification provider fails: the task still exists; the agent app fetches it.</li>
+          <li>Agent does not acknowledge: release the assignment after a lease timeout.</li>
+          <li>Database fails: the system temporarily stops accepting changes, but committed tasks survive.</li>
+          <li>Agent falsely completes a task: optionally use <code>PENDING_VERIFICATION</code> until the ATM reports healthy status and updated cash.</li>
+        </ul>
+
+        <p>If notification reliability requires more than retries, I would then introduce an <strong>outbox table and relay inside this same application</strong>. I would not begin the design with an external event platform.</p>
+
+        <h2>10. Scaling discussion</h2>
+
+        <p>For 5,000 ATMs:</p>
+
+        <ul>
+          <li>Add stateless application instances.</li>
+          <li>Add worker instances using <code>SKIP LOCKED</code>.</li>
+          <li>Index <code>atm.last_seen_at</code>, task status and assignee.</li>
+          <li>Add a read replica only if dashboard traffic requires it.</li>
+        </ul>
+
+        <p>For millions across countries:</p>
+
+        <ul>
+          <li>Partition ATM ownership by region or country.</li>
+          <li>Give each region its own ingestion/application/database stack.</li>
+          <li>Publish regional summaries to a global dashboard.</li>
+          <li>Introduce a durable event platform where regional decoupling becomes valuable.</li>
+          <li>Address data residency and regional failover.</li>
+        </ul>
+
+        <p>That is an extension of the simple design, not the starting point.</p>
+
+        <h2>How I would allocate the 50 minutes</h2>
+
+        <ul>
+          <li>0–7 minutes: clarify and finalize requirements</li>
+          <li>7–10: capacity and measurable NFRs</li>
+          <li>10–17: APIs and entities</li>
+          <li>17–25: simple high-level architecture</li>
+          <li>25–35: end-to-end walkthrough</li>
+          <li>35–44: idempotency, constraints and concurrency</li>
+          <li>44–48: failures and trade-offs</li>
+          <li>48–50: scaling summary and recap</li>
+        </ul>
+
+        <p>This directly addresses every item in Revolut’s feedback while still giving you room to demonstrate the strongest part of your knowledge. The difference isn’t that this answer knows more than you did—it makes the evaluator receive the evidence in the order their rubric expects.</p>
+      </article>
+
+      <footer class="article-footer">
+        <a href="../index.html">← Back to all articles</a>
+      </footer>
+    </main>
+  </body>
+</html>
