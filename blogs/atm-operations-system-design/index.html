@@ -6,7 +6,7 @@
     <title>Designing a Reliable ATM Operations System — Dhayanand Baskar</title>
     <meta name="description" content="A structured system-design walkthrough for ATM telemetry, refill and repair tasks, agent assignment, concurrency, and idempotency." />
     <link rel="icon" href="../../favicon.svg" />
-    <link rel="stylesheet" href="../blog.css?v=2" />
+    <link rel="stylesheet" href="../blog.css?v=3" />
   </head>
   <body>
     <main class="article-page">
@@ -31,23 +31,31 @@
       </header>
 
       <article class="article-body">
-        <p>I would design it as <strong>one stateless ATM Operations application, one PostgreSQL database, one background worker, and an external notification provider</strong>. No orchestrator, separate User Service, ATM Tracker, Task Service, SNS or SQS in the initial design.</p>
+        <h2>Problem statement</h2>
 
-        <p>The point of the interview would be to make the requirements, behaviours, APIs, data model and concurrency rules unmistakably clear before discussing extensions.</p>
+        <blockquote class="problem-prompt">Design a system for managing the maintenance of five ATMs in London. The system should monitor each ATM’s cash levels and operational status and create refill or repair tasks when necessary. Refills are currently coordinated manually and inefficiently. Route optimisation is out of scope.</blockquote>
+
+        <p>This is deliberately vague. It describes the business problem and one boundary, but it does not define the cash model, task-triggering rules, user roles, assignment policy, completion criteria, telemetry frequency or consistency expectations.</p>
+
+        <p>The first step is therefore not drawing an architecture. It is turning that ambiguity into agreed system behaviours and measurable constraints. I would ask focused questions, state any assumptions aloud, and translate each answer into a functional or non-functional requirement.</p>
 
         <h2>1. Clarify the problem</h2>
 
         <p>I would begin with these questions:</p>
 
         <ul>
-          <li>Does an ATM report only its total cash, or cash by currency and denomination?</li>
-          <li>What conditions create a task: low cash, hardware error and missed heartbeat?</li>
+          <li>Who uses the system: operations managers, field agents and administrators?</li>
+          <li>Does an ATM report only total cash, or cash by currency and denomination?</li>
+          <li>Is the refill threshold global, or configurable per ATM, currency or denomination?</li>
+          <li>What conditions create a repair task: a hardware error, a missed heartbeat, or both?</li>
           <li>Can an ATM have a refill and repair task simultaneously?</li>
           <li>Is assignment automatic or performed by a manager?</li>
           <li>Does an agent handle only one active task?</li>
           <li>What proves completion: the agent’s confirmation, or subsequent ATM telemetry?</li>
           <li>How frequently do ATMs report?</li>
-          <li>Is routing explicitly out of scope?</li>
+          <li>How quickly must accepted telemetry appear on the dashboard and create a task?</li>
+          <li>Can accepted telemetry or an accepted task transition ever be lost?</li>
+          <li>Is basic task assignment in scope even though route optimisation is not?</li>
           <li>Do we design only for five ATMs, while leaving a path to future growth?</li>
         </ul>
 
@@ -59,6 +67,10 @@
     { "currency": "GBP", "denomination": 20, "noteCount": 200 }
   ]
 }</code></pre>
+
+        <p>Once those answers are agreed, I would design it as <strong>one stateless ATM Operations application, one PostgreSQL database, one background worker, and an external notification provider</strong>. No orchestrator, separate User Service, ATM Tracker, Task Service, SNS or SQS in the initial design.</p>
+
+        <p>The point is to make the requirements, behaviours, APIs, data model and concurrency rules unmistakably clear before discussing extensions.</p>
 
         <h2>2. Functional requirements</h2>
 

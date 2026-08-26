@@ -162,6 +162,17 @@ h1 { margin: 0; font-size: clamp(42px, 8vw, 72px); letter-spacing: -.045em; }
   font-size: 21px;
   font-style: italic;
 }
+.article-body .problem-prompt {
+  margin: 24px 0 28px;
+  padding: 24px 28px;
+  border-left-width: 5px;
+  background: var(--wash);
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 24px;
+  font-style: normal;
+  line-height: 1.48;
+}
 
 pre {
   max-width: 100%;
@@ -203,6 +214,7 @@ p code, li code {
   .article-body h2 { margin-top: 44px; font-size: 26px; }
   .article-body h3 { font-size: 20px; }
   .article-body p, .article-body li { font-size: 17px; }
+  .article-body .problem-prompt { padding: 20px; font-size: 21px; }
   pre { margin-left: -10px; margin-right: -10px; padding: 18px 16px; font-size: 12px; }
 }
 
