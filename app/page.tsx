@@ -54,7 +54,7 @@ export default function Home() {
           <img className="profile-photo" src="/profile-photo.png" alt="Dhayanand Baskar" width="76" height="76" fetchPriority="high" />
           <div className="profile-meta">
             <strong>Dhayanand Baskar</strong>
-            <div className="availability"><span className="status-dot" /><span>Berlin · Open to senior software opportunities</span></div>
+            <div className="availability"><span className="status-dot" /><span>Berlin · Open to Senior and Staff-level Software Engineering opportunities</span></div>
           </div>
         </div>
         <div className="toolbar-actions">
