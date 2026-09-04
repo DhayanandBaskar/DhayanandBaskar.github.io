@@ -49,6 +49,7 @@ test("keeps the screen and print layouts aligned to A4", async () => {
 
   assert.match(appCss, /aspect-ratio:\s*210\s*\/\s*297/);
   assert.match(appCss, /@page\s*\{\s*size:\s*A4/);
+  assert.match(appCss, /@media screen and \(min-width:\s*761px\) and \(max-width:\s*1107px\)/);
   assert.match(appCss, /\.role li[^}]*font-size:\s*13px/);
   assert.equal(
     staticCss,

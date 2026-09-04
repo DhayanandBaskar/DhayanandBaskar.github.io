@@ -109,6 +109,10 @@ h1 { margin: 0; font-size: clamp(58px, 7.8vw, 84px); font-weight: 800; line-heig
 .resume-footer { display: flex; justify-content: flex-end; align-items: end; margin-top: auto; padding-top: 26px; }
 .resume-footer span { color: var(--muted); font: 600 8px/1 var(--font-geist-mono), monospace; text-transform: uppercase; letter-spacing: .1em; }
 
+@media screen and (min-width: 761px) and (max-width: 1107px) {
+  .resume-page { min-height: calc((100vw - 48px) * 1.4143); aspect-ratio: auto; overflow: visible; }
+}
+
 @media screen and (max-width: 760px) {
   .site-shell { padding: 16px 9px 42px; }
   .toolbar { flex-direction: column; align-items: stretch; gap: 14px; margin-bottom: 16px; }
