@@ -50,7 +50,13 @@ export default function Home() {
   return (
     <main className="site-shell">
       <nav className="toolbar" aria-label="Resume actions">
-        <div className="availability"><span className="status-dot" /><span>Berlin · Open to senior backend opportunities</span></div>
+        <div className="profile-chip">
+          <img className="profile-photo" src="/profile-photo.png" alt="Dhayanand Baskar" width="76" height="76" fetchPriority="high" />
+          <div className="profile-meta">
+            <strong>Dhayanand Baskar</strong>
+            <div className="availability"><span className="status-dot" /><span>Berlin · Open to senior backend opportunities</span></div>
+          </div>
+        </div>
         <div className="toolbar-actions">
           <a className="secondary-button" href="mailto:dhayanand.baskar@gmail.com">Let&apos;s talk</a>
           <a className="download-button" href="/Dhayanand-Baskar-Resume.pdf" download="Dhayanand-Baskar-Resume.pdf" aria-label="Download Dhayanand Baskar resume as a PDF">

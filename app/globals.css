@@ -16,7 +16,11 @@ a { color: inherit; text-decoration: none; }
 button, a { -webkit-tap-highlight-color: transparent; }
 
 .site-shell { min-height: 100vh; padding: 32px 24px 72px; }
-.toolbar { width: min(1060px, 100%); margin: 0 auto 16px; display: flex; align-items: center; justify-content: space-between; color: #465751; font-size: 12px; }
+.toolbar { width: min(1060px, 100%); margin: 0 auto 18px; display: flex; align-items: center; justify-content: space-between; gap: 24px; color: #465751; font-size: 12px; }
+.profile-chip { display: flex; min-width: 0; align-items: center; gap: 14px; }
+.profile-photo { width: 76px; height: 76px; flex: 0 0 76px; object-fit: cover; object-position: 50% 38%; border: 3px solid rgba(255,255,255,.9); border-radius: 50%; background: #ccd8d3; box-shadow: 0 10px 28px rgba(17,37,31,.18), 0 0 0 1px rgba(16,36,30,.08); }
+.profile-meta { display: grid; gap: 7px; min-width: 0; }
+.profile-meta > strong { color: var(--ink); font-size: 15px; line-height: 1; letter-spacing: -.02em; }
 .availability, .toolbar-actions { display: flex; align-items: center; gap: 10px; }
 .status-dot { width: 7px; height: 7px; border-radius: 50%; background: #1c956e; box-shadow: 0 0 0 4px rgba(28,149,110,.12); }
 .toolbar-actions { gap: 8px; }
@@ -107,8 +111,12 @@ h1 { margin: 0; font-size: clamp(58px, 7.8vw, 84px); font-weight: 800; line-heig
 
 @media screen and (max-width: 760px) {
   .site-shell { padding: 16px 9px 42px; }
-  .availability { display: none; }
-  .toolbar { justify-content: flex-end; }
+  .toolbar { flex-direction: column; align-items: stretch; gap: 14px; margin-bottom: 16px; }
+  .profile-chip { justify-content: center; }
+  .profile-photo { width: 64px; height: 64px; flex-basis: 64px; }
+  .profile-meta { gap: 6px; }
+  .profile-meta > strong, .availability { justify-content: center; text-align: center; }
+  .toolbar-actions { justify-content: center; flex-wrap: wrap; }
   .secondary-button, .download-button { padding: 10px 14px; }
   .resume-page { min-height: 0; aspect-ratio: auto; padding: 42px 27px 50px; overflow: visible; }
   .resume-page::before { width: 5px; }
