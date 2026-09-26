@@ -19,7 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const protocol = requestHeaders.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
   const origin = `${protocol}://${host}`;
   const title = "Dhayanand Baskar — Senior Software Engineer";
-  const description = "Senior backend and distributed systems engineer with 12+ years of experience building high-scale platforms.";
+  const description = "Senior software engineer with 12+ years of end-to-end product ownership and deep expertise in distributed systems at scale.";
 
   return {
     title,

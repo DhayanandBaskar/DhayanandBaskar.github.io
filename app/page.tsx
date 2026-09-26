@@ -1,7 +1,7 @@
 "use client";
 
 const personioHighlights = [
-  "Led backend architecture and implementation for absence management, powering balance, policy, holiday, payroll, calendar, and reporting workflows across Personio’s multi-tenant HR platform.",
+  "Owned the end-to-end technical delivery of absence-management capabilities, from product and domain design through APIs, data, integrations, rollout, and operations across Personio’s multi-tenant HR platform.",
   "Reduced Absence Balance API latency by ~70% at P95 and ~60% at P99 through query optimization, batching, workload isolation, and database-level tuning—eliminating timeout failures for a high-impact customer.",
   "Led the design and delivery of a balance materialization system covering 2M+ employee balances, replacing expensive real-time aggregation with precomputed, reporting-ready data that was faster, more predictable, and easier to reconcile.",
   "Strengthened event-driven data pipelines with idempotent consumers, retry-safe synchronization, reconciliation, observability, and reliable downstream payroll and calendar integrations.",
@@ -9,7 +9,7 @@ const personioHighlights = [
 ];
 
 const fortoHighlights = [
-  "Built core backend services for transportation management, real-time shipment visibility, and external logistics partner booking.",
+  "Built end-to-end product capabilities for transportation management, real-time shipment visibility, and external logistics partner booking.",
   "Designed event-ingestion flows that normalized third-party tracking updates and remained correct when events arrived late, duplicated, or out of order.",
   "Modeled multi-step partner bookings as long-running, event-driven state machines with explicit transitions, retry policies, reconciliation, and failure recovery.",
   "Used domain-driven design and event storming with logistics leaders to create a scalable Transport Plan model and incrementally automate operational workflows.",
@@ -59,7 +59,7 @@ export default function Home() {
         </div>
         <div className="toolbar-actions">
           <a className="secondary-button" href="mailto:dhayanand.baskar@gmail.com">Let&apos;s talk</a>
-          <a className="download-button" href="/Dhayanand-Baskar-Resume.pdf" download="Dhayanand-Baskar-Resume.pdf" aria-label="Download Dhayanand Baskar resume as a PDF">
+          <a className="download-button" href="/Dhayanand-Baskar-Resume.pdf?v=2" download="Dhayanand-Baskar-Resume.pdf" aria-label="Download Dhayanand Baskar resume as a PDF">
             <span aria-hidden="true">↓</span> Download PDF
           </a>
         </div>
@@ -70,9 +70,9 @@ export default function Home() {
           <div className="page-marker" aria-hidden="true">01 / 02</div>
           <header className="resume-header">
             <div className="identity">
-              <p className="eyebrow">Senior Software Engineer · Backend &amp; Distributed Systems</p>
+              <p className="eyebrow">Senior Software Engineer · Product &amp; Distributed Systems</p>
               <h1>Dhayanand<br />Baskar</h1>
-              <p className="hero-statement">Building high-throughput distributed systems that stay fast, reliable, and correct while serving millions of users.</p>
+              <p className="hero-statement">Building products end to end—from user workflows and APIs to distributed systems that stay reliable at scale.</p>
             </div>
             <div className="contact-block">
               <p>Berlin, Germany</p>
@@ -85,7 +85,7 @@ export default function Home() {
 
           <section className="profile-section ruled-section">
             <SectionTitle number="01">Profile</SectionTitle>
-            <p className="lead">Software engineer with 12+ years of experience designing and scaling distributed, high-throughput systems across HR technology, logistics, mobility, and SaaS. Combines deep system-design fundamentals with hands-on delivery—from domain modeling and API design to data partitioning, asynchronous workflows, production reliability, and performance optimization. Translates complex domains into resilient platforms and measurable business outcomes.</p>
+            <p className="lead">Software engineer with 12+ years of experience delivering products end to end across HR technology, logistics, mobility, and SaaS. Brings deep distributed-systems expertise and hands-on full-stack experience across product discovery, domain modeling, APIs, data, targeted frontend and mobile work, and production operations. Turns complex user and business problems into reliable systems and measurable outcomes.</p>
           </section>
 
           <section className="impact-strip" aria-label="Selected systems Dhayanand built or led">
@@ -109,15 +109,15 @@ export default function Home() {
           <div className="page-grid">
             <section className="experience-column">
               <SectionTitle number="02">Selected experience</SectionTitle>
-              <ExperienceRole company="Personio" title="Senior Backend Engineer" period="Jun 2022 — Present" location="Berlin" highlights={personioHighlights} />
-              <ExperienceRole company="Forto" title="Backend Software Engineer" period="Sep 2019 — May 2022" location="Berlin" highlights={fortoHighlights} />
+              <ExperienceRole company="Personio" title="Senior Software Engineer" period="Jun 2022 — Present" location="Berlin" highlights={personioHighlights} />
+              <ExperienceRole company="Forto" title="Software Engineer" period="Sep 2019 — May 2022" location="Berlin" highlights={fortoHighlights} />
             </section>
 
             <aside className="expertise-column">
               <SectionTitle number="03">Core expertise</SectionTitle>
               <div className="skill-group">
-                <h3>Architecture</h3>
-                <p>Distributed Systems<br />Event-Driven Architecture<br />Microservices · SOA<br />Domain-Driven Design<br />State Machines · REST APIs</p>
+                <h3>Product &amp; architecture</h3>
+                <p>End-to-End Delivery<br />Distributed Systems<br />Event-Driven Architecture<br />Domain-Driven Design<br />State Machines · REST APIs</p>
               </div>
               <div className="skill-group">
                 <h3>Languages</h3>
@@ -151,7 +151,7 @@ export default function Home() {
               <SectionTitle number="04">Earlier experience</SectionTitle>
               <ExperienceRole
                 company="Thoughtworks / Grab"
-                title="Fullstack Software Engineer"
+                title="Full-stack Software Engineer"
                 period="Dec 2017 — Sep 2019"
                 location="Bengaluru"
                 highlights={[
@@ -163,7 +163,7 @@ export default function Home() {
               />
               <ExperienceRole
                 company="Whatfix"
-                title="Fullstack Software Engineer"
+                title="Full-stack Software Engineer"
                 period="May 2017 — Dec 2017"
                 location="Bengaluru"
                 highlights={[
@@ -174,7 +174,7 @@ export default function Home() {
               />
               <ExperienceRole
                 company="Mphasis"
-                title="Fullstack Software Engineer"
+                title="Full-stack Software Engineer"
                 period="Jul 2014 — May 2017"
                 location="Pune"
                 highlights={[
