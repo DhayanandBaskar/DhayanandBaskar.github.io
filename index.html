@@ -68,7 +68,13 @@
             <div class="work-meta"><time>2022—now</time><span>Berlin</span></div>
             <div class="work-copy">
               <h3>Personio <span>Senior Software Engineer</span></h3>
-              <p>I own absence-management capabilities from problem framing to production. Recent work includes balance materialization for payroll and reporting, API performance, and reliable event-driven integrations.</p>
+              <p>I own absence-management capabilities from problem framing and architecture through implementation, rollout, migration, and production operations.</p>
+              <ul class="work-highlights">
+                <li><b>Balance materialization at scale.</b> Led the move from expensive read-time calculations to temporal snapshots for more than two million employee balances used by payroll and reporting. Priority-aware processing protected interactive changes during bulk work, reduced P95 latency by roughly 70%, and made million-employee backfills possible in hours rather than days.</li>
+                <li><b>Correctness beyond launch.</b> Built continuous verification that compares stored balances with live calculations, categorizes discrepancies, and drives dashboards, alerts, and runbooks. Reworked a fragile three-day bug-impact analysis into a resumable process that completes in about four hours.</li>
+                <li><b>Holiday data as a platform.</b> Sequenced a payroll-critical initiative from historically correct employee holidays, through automated third-party holiday maintenance, to targeted change propagation for Time Off, Attendance, Overtime, and Payroll.</li>
+                <li><b>Reliable event delivery.</b> Introduced transactional-outbox publishing to prevent sporadically missed updates and used FIFO message grouping to avoid concurrent processing for the same employee, contributing reusable support to the company framework.</li>
+              </ul>
               <p class="keywords">Product ownership / Java &amp; Kotlin / TypeScript / Distributed systems / PostgreSQL</p>
             </div>
           </article>
