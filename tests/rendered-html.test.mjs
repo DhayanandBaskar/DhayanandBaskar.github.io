@@ -60,3 +60,19 @@ test("keeps the static and application portfolio aligned and preserves the A4 re
   assert.match(resumeHtml, /employee time-off and vacation balances handled by the materialization platform I led, used by payroll and reporting/);
   assert.match(resumeHtml, /resume\.css\?v=4/);
 });
+
+test("keeps the writing pages in the simple portfolio theme", async () => {
+  const [blogCss, blogIndex, atmArticle, roomArticle] = await Promise.all([
+    readFile(new URL("../blogs/blog.css", import.meta.url), "utf8"),
+    readFile(new URL("../blogs/index.html", import.meta.url), "utf8"),
+    readFile(new URL("../blogs/atm-operations-system-design/index.html", import.meta.url), "utf8"),
+    readFile(new URL("../blogs/room-rental-system-design/index.html", import.meta.url), "utf8"),
+  ]);
+
+  assert.match(blogCss, /--blue:\s*#2149d8/);
+  assert.doesNotMatch(blogCss, /Iowan|box-shadow|border-radius/);
+  assert.match(blogIndex, /blog\.css\?v=4/);
+  assert.match(blogIndex, /Resume ↓/);
+  assert.match(atmArticle, /blog\.css\?v=4/);
+  assert.match(roomArticle, /blog\.css\?v=4/);
+});
