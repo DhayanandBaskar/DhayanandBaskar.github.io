@@ -21,13 +21,13 @@ test("server-renders the portfolio homepage", async () => {
 
   const html = await response.text();
   assert.match(html, /<title>Dhayanand Baskar — Senior Software Engineer<\/title>/i);
-  assert.match(html, /I build products that stay reliable/);
-  assert.match(html, /Product engineering/);
-  assert.match(html, /Selected experience/);
+  assert.match(html, /Software engineer building products, platforms/);
+  assert.match(html, /Selected results/);
+  assert.match(html, /Selected work/);
   assert.match(html, /Full-stack Software Engineer/);
   assert.match(html, /employee time-off and vacation balances/);
   assert.match(html, /used by payroll and reporting/);
-  assert.match(html, /Engineering notes/);
+  assert.match(html, /Writing/);
   assert.match(html, /Dhayanand-Baskar-Resume\.pdf\?v=4/);
   assert.doesNotMatch(html, /Senior Backend Engineer|Backend Software Engineer/);
   assert.doesNotMatch(html, /codex-preview|SkeletonPreview|Building your site/);
@@ -47,8 +47,10 @@ test("keeps the static and application portfolio aligned and preserves the A4 re
   assert.match(staticCss, /font-size:\s*16px/);
   assert.match(staticCss, /@media \(max-width:\s*760px\)/);
   assert.match(staticCss, /prefers-reduced-motion/);
+  assert.doesNotMatch(staticCss, /@keyframes|linear-gradient|border-radius/);
   assert.match(page, /href="\/Dhayanand-Baskar-Resume\.pdf\?v=4"/);
   assert.match(staticHtml, /href="Dhayanand-Baskar-Resume\.pdf\?v=4"/);
+  assert.match(staticHtml, /styles\.css\?v=5/);
   assert.match(staticHtml, /employee time-off and vacation balances/);
 
   assert.match(resumeCss, /aspect-ratio:\s*210\s*\/\s*297/);
