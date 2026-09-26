@@ -32,6 +32,7 @@ test("server-renders the complete resume", async () => {
   assert.match(html, /<title>Dhayanand Baskar — Senior Software Engineer<\/title>/i);
   assert.match(html, /Building products end to end/);
   assert.match(html, /Senior Software Engineer/);
+  assert.match(html, /Full-stack Software Engineer/);
   assert.doesNotMatch(html, /Senior Backend Engineer|Backend Software Engineer/);
   assert.match(html, /Thoughtworks \/ Grab/);
   assert.match(html, /2M\+/);
@@ -62,6 +63,6 @@ test("keeps the screen and print layouts aligned to A4", async () => {
         ':root {\n  --font-geist-mono: "SFMono-Regular", Consolas, "Liberation Mono";',
       ),
   );
-  assert.match(page, /href="\/Dhayanand-Baskar-Resume\.pdf\?v=2"/);
-  assert.match(staticHtml, /href="Dhayanand-Baskar-Resume\.pdf\?v=2"/);
+  assert.match(page, /href="\/Dhayanand-Baskar-Resume\.pdf\?v=3"/);
+  assert.match(staticHtml, /href="Dhayanand-Baskar-Resume\.pdf\?v=3"/);
 });

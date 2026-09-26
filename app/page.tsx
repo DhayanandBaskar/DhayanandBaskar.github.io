@@ -1,15 +1,15 @@
 "use client";
 
 const personioHighlights = [
-  "Owned the end-to-end technical delivery of absence-management capabilities, from product and domain design through APIs, data, integrations, rollout, and operations across Personio’s multi-tenant HR platform.",
+  "Owned end-to-end delivery of absence-management product capabilities, translating employee, HR, payroll, and reporting needs into user workflows, domain models, APIs, data, integrations, rollout, observability, and production support.",
   "Reduced Absence Balance API latency by ~70% at P95 and ~60% at P99 through query optimization, batching, workload isolation, and database-level tuning—eliminating timeout failures for a high-impact customer.",
   "Led the design and delivery of a balance materialization system covering 2M+ employee balances, replacing expensive real-time aggregation with precomputed, reporting-ready data that was faster, more predictable, and easier to reconcile.",
   "Strengthened event-driven data pipelines with idempotent consumers, retry-safe synchronization, reconciliation, observability, and reliable downstream payroll and calendar integrations.",
-  "Drove technical initiatives from design through rollout: aligning cross-functional stakeholders, reviewing architecture, mentoring engineers, defining operational runbooks, and supporting production incidents.",
+  "Drove initiatives from problem framing through rollout: partnering with Product and cross-functional stakeholders, defining scope and trade-offs, reviewing architecture, mentoring engineers, instrumenting outcomes, and supporting production incidents.",
 ];
 
 const fortoHighlights = [
-  "Built end-to-end product capabilities for transportation management, real-time shipment visibility, and external logistics partner booking.",
+  "Built full-stack product capabilities for transportation management, real-time shipment visibility, and external partner booking, spanning operational user workflows, APIs, domain logic, and integrations.",
   "Designed event-ingestion flows that normalized third-party tracking updates and remained correct when events arrived late, duplicated, or out of order.",
   "Modeled multi-step partner bookings as long-running, event-driven state machines with explicit transitions, retry policies, reconciliation, and failure recovery.",
   "Used domain-driven design and event storming with logistics leaders to create a scalable Transport Plan model and incrementally automate operational workflows.",
@@ -59,7 +59,7 @@ export default function Home() {
         </div>
         <div className="toolbar-actions">
           <a className="secondary-button" href="mailto:dhayanand.baskar@gmail.com">Let&apos;s talk</a>
-          <a className="download-button" href="/Dhayanand-Baskar-Resume.pdf?v=2" download="Dhayanand-Baskar-Resume.pdf" aria-label="Download Dhayanand Baskar resume as a PDF">
+          <a className="download-button" href="/Dhayanand-Baskar-Resume.pdf?v=3" download="Dhayanand-Baskar-Resume.pdf" aria-label="Download Dhayanand Baskar resume as a PDF">
             <span aria-hidden="true">↓</span> Download PDF
           </a>
         </div>
@@ -85,7 +85,7 @@ export default function Home() {
 
           <section className="profile-section ruled-section">
             <SectionTitle number="01">Profile</SectionTitle>
-            <p className="lead">Software engineer with 12+ years of experience delivering products end to end across HR technology, logistics, mobility, and SaaS. Brings deep distributed-systems expertise and hands-on full-stack experience across product discovery, domain modeling, APIs, data, targeted frontend and mobile work, and production operations. Turns complex user and business problems into reliable systems and measurable outcomes.</p>
+            <p className="lead">Software engineer with 12+ years of experience delivering products end to end across HR technology, logistics, mobility, and SaaS. Brings deep distributed-systems expertise and hands-on full-stack experience across product discovery, user workflows, TypeScript and JavaScript, APIs, data, integrations, and production operations. Turns complex user and business problems into reliable systems and measurable outcomes.</p>
           </section>
 
           <section className="impact-strip" aria-label="Selected systems Dhayanand built or led">
@@ -110,7 +110,7 @@ export default function Home() {
             <section className="experience-column">
               <SectionTitle number="02">Selected experience</SectionTitle>
               <ExperienceRole company="Personio" title="Senior Software Engineer" period="Jun 2022 — Present" location="Berlin" highlights={personioHighlights} />
-              <ExperienceRole company="Forto" title="Software Engineer" period="Sep 2019 — May 2022" location="Berlin" highlights={fortoHighlights} />
+              <ExperienceRole company="Forto" title="Full-stack Software Engineer" period="Sep 2019 — May 2022" location="Berlin" highlights={fortoHighlights} />
             </section>
 
             <aside className="expertise-column">
