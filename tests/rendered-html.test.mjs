@@ -8,61 +8,53 @@ async function render() {
   const { default: worker } = await import(workerUrl.href);
 
   return worker.fetch(
-    new Request("http://localhost/", {
-      headers: { accept: "text/html" },
-    }),
-    {
-      ASSETS: {
-        fetch: async () => new Response("Not found", { status: 404 }),
-      },
-    },
-    {
-      waitUntil() {},
-      passThroughOnException() {},
-    },
+    new Request("http://localhost/", { headers: { accept: "text/html" } }),
+    { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } },
+    { waitUntil() {}, passThroughOnException() {} },
   );
 }
 
-test("server-renders the complete resume", async () => {
+test("server-renders the portfolio homepage", async () => {
   const response = await render();
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
 
   const html = await response.text();
   assert.match(html, /<title>Dhayanand Baskar — Senior Software Engineer<\/title>/i);
-  assert.match(html, /Building products end to end/);
-  assert.match(html, /Senior Software Engineer/);
+  assert.match(html, /I build products that stay reliable/);
+  assert.match(html, /Product engineering/);
+  assert.match(html, /Selected experience/);
   assert.match(html, /Full-stack Software Engineer/);
+  assert.match(html, /employee time-off and vacation balances/);
+  assert.match(html, /used by payroll and reporting/);
+  assert.match(html, /Engineering notes/);
+  assert.match(html, /Dhayanand-Baskar-Resume\.pdf\?v=4/);
   assert.doesNotMatch(html, /Senior Backend Engineer|Backend Software Engineer/);
-  assert.match(html, /Thoughtworks \/ Grab/);
-  assert.match(html, /2M\+/);
-  assert.match(html, /End-to-end transport tracking/);
-  assert.match(html, /How I lead/i);
-  assert.match(html, /Dhayanand-Baskar-Resume\.pdf/);
   assert.doesNotMatch(html, /codex-preview|SkeletonPreview|Building your site/);
 });
 
-test("keeps the screen and print layouts aligned to A4", async () => {
-  const [appCss, staticCss, page, staticHtml] = await Promise.all([
+test("keeps the static and application portfolio aligned and preserves the A4 resume", async () => {
+  const [appCss, staticCss, page, staticHtml, resumeCss, resumeHtml] = await Promise.all([
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
     readFile(new URL("../styles.css", import.meta.url), "utf8"),
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../index.html", import.meta.url), "utf8"),
+    readFile(new URL("../resume.css", import.meta.url), "utf8"),
+    readFile(new URL("../resume.html", import.meta.url), "utf8"),
   ]);
 
-  assert.match(appCss, /aspect-ratio:\s*210\s*\/\s*297/);
-  assert.match(appCss, /@page\s*\{\s*size:\s*A4/);
-  assert.match(appCss, /@media screen and \(min-width:\s*761px\) and \(max-width:\s*1107px\)/);
-  assert.match(appCss, /\.role li[^}]*font-size:\s*13px/);
-  assert.equal(
-    staticCss,
-    appCss
-      .replace('@import "tailwindcss";\n\n', "")
-      .replace(
-        ":root {",
-        ':root {\n  --font-geist-mono: "SFMono-Regular", Consolas, "Liberation Mono";',
-      ),
-  );
-  assert.match(page, /href="\/Dhayanand-Baskar-Resume\.pdf\?v=3"/);
-  assert.match(staticHtml, /href="Dhayanand-Baskar-Resume\.pdf\?v=3"/);
+  assert.equal(staticCss, appCss);
+  assert.match(staticCss, /font-size:\s*16px/);
+  assert.match(staticCss, /@media \(max-width:\s*760px\)/);
+  assert.match(staticCss, /prefers-reduced-motion/);
+  assert.match(page, /href="\/Dhayanand-Baskar-Resume\.pdf\?v=4"/);
+  assert.match(staticHtml, /href="Dhayanand-Baskar-Resume\.pdf\?v=4"/);
+  assert.match(staticHtml, /employee time-off and vacation balances/);
+
+  assert.match(resumeCss, /aspect-ratio:\s*210\s*\/\s*297/);
+  assert.match(resumeCss, /@page\s*\{\s*size:\s*A4/);
+  assert.match(resumeHtml, /01 \/ 02/);
+  assert.match(resumeHtml, /02 \/ 02/);
+  assert.match(resumeHtml, /employee time-off and vacation balances handled by the materialization platform I led, used by payroll and reporting/);
+  assert.match(resumeHtml, /resume\.css\?v=4/);
 });
