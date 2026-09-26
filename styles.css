@@ -26,7 +26,7 @@ a:focus-visible { outline: 2px solid var(--blue); outline-offset: 4px; }
 
 .intro { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: clamp(48px, 9vw, 120px); padding: 82px 0 96px; }
 .identity { padding-top: 8px; }
-.identity img { width: 104px; height: 104px; margin-bottom: 24px; border: 1px solid var(--line); object-fit: cover; object-position: 50% 38%; filter: grayscale(1); }
+.identity img { width: 104px; height: 104px; margin-bottom: 24px; border: 1px solid var(--line); object-fit: cover; object-position: 50% 38%; }
 .identity p { margin: 0 0 3px; color: var(--muted); font-size: 14px; line-height: 1.5; }
 .identity p:first-of-type { color: var(--text); font-weight: 700; }
 .identity .availability { max-width: 180px; margin-top: 18px; color: var(--blue); }

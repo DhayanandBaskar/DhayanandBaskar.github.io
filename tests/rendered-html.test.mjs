@@ -50,7 +50,8 @@ test("keeps the static and application portfolio aligned and preserves the A4 re
   assert.doesNotMatch(staticCss, /@keyframes|linear-gradient|border-radius/);
   assert.match(page, /href="\/Dhayanand-Baskar-Resume\.pdf\?v=4"/);
   assert.match(staticHtml, /href="Dhayanand-Baskar-Resume\.pdf\?v=4"/);
-  assert.match(staticHtml, /styles\.css\?v=5/);
+  assert.match(staticHtml, /styles\.css\?v=6/);
+  assert.doesNotMatch(staticCss, /grayscale\(/);
   assert.match(staticHtml, /employee time-off and vacation balances/);
 
   assert.match(resumeCss, /aspect-ratio:\s*210\s*\/\s*297/);
