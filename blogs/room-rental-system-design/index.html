@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Room Rental with Unreliable Inventory and Revolut Payments — Dhayanand Baskar</title>
+    <title>Room Rental with Unreliable Inventory and a Payment Provider — Dhayanand Baskar</title>
     <meta name="description" content="A system-design walkthrough for room rental with unreliable third-party inventory, payment authorisation, compensation, and reconciliation." />
     <link rel="icon" type="image/svg+xml" href="../../favicon.svg?v=2" />
     <link rel="stylesheet" href="../blog.css?v=4" />
@@ -23,7 +23,7 @@
           <a class="category-chip" href="../index.html">System Design</a>
           <span>24 min read</span>
         </div>
-        <h1>Room Rental with Unreliable Inventory and Revolut Payments</h1>
+        <h1>Room Rental with Unreliable Inventory and a Payment Provider</h1>
         <p class="article-deck">A booking saga built around inventory holds, payment authorisation, compensation, reconciliation, and explicit consistency boundaries.</p>
         <ul class="tag-list" aria-label="Tags">
           <li>Payments</li>
@@ -53,10 +53,10 @@
           <li>Search results show fixed prices and recent availability.</li>
           <li>Customers initiate a booking for one room and date range.</li>
           <li>The system temporarily holds the room while payment is completed.</li>
-          <li>Payment is handled through the Revolut Merchant API.</li>
+          <li>Payment is handled through an external payment provider.</li>
           <li>The booking becomes confirmed only when:
             <ul>
-              <li>Revolut authorises the payment.</li>
+              <li>The payment provider authorises the payment.</li>
               <li>The third party confirms the room.</li>
               <li>We capture the payment.</li>
             </ul>
@@ -118,7 +118,7 @@ POST /v1/bookings
 GET  /v1/bookings/{bookingId}
 POST /v1/bookings/{bookingId}/cancel
 
-POST /v1/webhooks/revolut</code></pre>
+POST /v1/webhooks/payments</code></pre>
 
         <p>Create booking:</p>
 
@@ -184,7 +184,7 @@ provider_hold_id
 provider_hold_expires_at
 provider_booking_id
 
-revolut_order_id
+payment_order_id
 payment_status
 
 client_idempotency_key
@@ -213,7 +213,7 @@ MANUAL_REVIEW</code></pre>
 
         <pre><code>id
 booking_id
-provider              INVENTORY | REVOLUT
+provider              INVENTORY | PAYMENT
 operation             HOLD | CONFIRM | RELEASE | CAPTURE | CANCEL
 status
 attempt_count
@@ -243,7 +243,7 @@ Stateless Room Booking application
   - Search API
   - Booking API
   - Supplier adapter
-  - Revolut adapter/webhook
+  - Payment provider adapter/webhook
   - Booking workflow worker
         |
 PostgreSQL + optional Redis search cache</code></pre>
@@ -252,7 +252,7 @@ PostgreSQL + optional Redis search cache</code></pre>
 
         <ul>
           <li>Unreliable inventory provider</li>
-          <li>Revolut Merchant API</li>
+          <li>Payment provider</li>
           <li>Email/push provider</li>
         </ul>
 
@@ -278,14 +278,14 @@ PostgreSQL + optional Redis search cache</code></pre>
 
         <h2>7. Booking and payment flow</h2>
 
-        <p>I would use Revolut’s <strong>manual capture</strong> mode: first reserve the customer’s funds, confirm the room, and only then capture the money. Revolut explicitly recommends manual capture when inventory must be verified before fulfilment. <a href="https://developer.revolut.com/docs/guides/merchant/operations/capture-and-settlement/capture-later">Revolut manual-capture guide</a></p>
+        <p>I would choose a payment provider that supports separate <strong>authorisation and capture</strong>: first reserve the customer’s funds, confirm the room, and only then capture the money. If the provider cannot support this flow, it is a poor fit for inventory that must be verified before fulfilment.</p>
 
         <pre><code>sequenceDiagram
     actor C as Customer
     participant B as Booking application
     participant D as PostgreSQL
     participant I as Inventory provider
-    participant R as Revolut Merchant API
+    participant P as Payment provider
 
     C-&gt;&gt;B: POST /bookings + Idempotency-Key
     B-&gt;&gt;D: Create INITIATED booking
@@ -293,22 +293,22 @@ PostgreSQL + optional Redis search cache</code></pre>
     I--&gt;&gt;B: holdId + expiresAt
     B-&gt;&gt;D: INVENTORY_HELD
 
-    B-&gt;&gt;R: Create order&lt;br/&gt;manual capture&lt;br/&gt;reference = bookingId
-    R--&gt;&gt;B: orderId + checkoutUrl
+    B-&gt;&gt;P: Create payment&lt;br/&gt;manual capture&lt;br/&gt;reference = bookingId
+    P--&gt;&gt;B: paymentId + checkoutUrl
     B-&gt;&gt;D: AWAITING_PAYMENT
     B--&gt;&gt;C: checkoutUrl
 
-    C-&gt;&gt;R: Complete checkout
-    R--&gt;&gt;B: ORDER_AUTHORISED webhook
-    B-&gt;&gt;R: Retrieve and verify order
+    C-&gt;&gt;P: Complete checkout
+    P--&gt;&gt;B: PAYMENT_AUTHORISED webhook
+    B-&gt;&gt;P: Retrieve and verify payment
     B-&gt;&gt;D: PAYMENT_AUTHORISED
 
     B-&gt;&gt;I: Confirm hold
     I--&gt;&gt;B: providerBookingId
     B-&gt;&gt;D: INVENTORY_CONFIRMED
 
-    B-&gt;&gt;R: Capture authorised order
-    R--&gt;&gt;B: ORDER_COMPLETED webhook
+    B-&gt;&gt;P: Capture authorised payment
+    P--&gt;&gt;B: PAYMENT_CAPTURED webhook
     B-&gt;&gt;D: CONFIRMED
     B--&gt;&gt;C: Booking confirmed</code></pre>
 
@@ -318,38 +318,37 @@ PostgreSQL + optional Redis search cache</code></pre>
           <li>Holding inventory before payment reduces the chance that the room disappears during checkout.</li>
           <li>Authorising rather than capturing prevents charging the customer before supplier confirmation.</li>
           <li>Confirming inventory before capture avoids refunds for normal availability failures.</li>
-          <li>If confirmation fails, cancel the uncaptured Revolut order and release the authorisation.</li>
+          <li>If confirmation fails, cancel the uncaptured payment and release the authorisation.</li>
           <li>If capture fails after inventory confirmation, cancel the supplier booking or enter <code>MANUAL_REVIEW</code>.</li>
         </ul>
 
-        <p>Revolut orders can move through <code>pending</code>, <code>processing</code>, <code>authorised</code> and <code>completed</code>; failed payment attempts may return the same order to <code>pending</code>, allowing another attempt. Therefore, <code>ORDER_PAYMENT_FAILED</code> does <strong>not</strong> automatically mean the whole booking has failed. <a href="https://developer.revolut.com/docs/guides/merchant/reference/order-lifecycle">Official order lifecycle</a></p>
+        <p>Provider-specific status names vary, so the adapter should normalize them into a small internal lifecycle such as <code>CREATED</code>, <code>AUTHORISED</code>, <code>CAPTURED</code>, <code>FAILED</code>, and <code>CANCELLED</code>. A failed payment attempt does <strong>not</strong> automatically fail the booking if the customer can retry before the inventory hold expires.</p>
 
         <h2>8. Payment implementation</h2>
 
-        <p>Create a Revolut order approximately like:</p>
+        <p>The adapter maps a provider-neutral payment request approximately like:</p>
 
         <pre><code>{
   "amount": 30000,
   "currency": "GBP",
-  "capture_mode": "manual",
-  "merchant_order_data": {
-    "reference": "booking-123"
-  },
+  "capture_method": "manual",
+  "idempotency_key": "booking-123",
+  "reference": "booking-123",
   "description": "Room booking booking-123"
 }</code></pre>
 
-        <p>Persist the returned <code>revolut_order_id</code> and checkout URL.</p>
+        <p>Persist the returned <code>payment_order_id</code> and checkout URL.</p>
 
-        <p>If order creation times out after Revolut may have accepted it:</p>
+        <p>If payment creation times out after the provider may have accepted it:</p>
 
         <ol>
           <li>Do not blindly create another order.</li>
-          <li>Query Revolut using our merchant order reference.</li>
+          <li>Query the payment provider using our booking reference.</li>
           <li>Reuse the existing order if found.</li>
           <li>Create a new one only when absence is established.</li>
         </ol>
 
-        <p>The Merchant API supports filtering orders by the merchant’s reference, which makes this reconciliation possible. <a href="https://developer.revolut.com/docs/api/merchant/2024-05-01">Revolut Merchant API</a></p>
+        <p>The provider contract must support an idempotency key, lookup by merchant reference, or both. Without either capability, an ambiguous timeout cannot be retried safely and the booking must move to <code>MANUAL_REVIEW</code>.</p>
 
         <h3>Webhooks</h3>
 
@@ -357,17 +356,17 @@ PostgreSQL + optional Redis search cache</code></pre>
 
         <ol>
           <li>Reads the unmodified request body.</li>
-          <li>Verifies the HMAC signature.</li>
-          <li>Verifies that the timestamp is within the allowed tolerance.</li>
+          <li>Verifies the provider’s webhook signature.</li>
+          <li>Verifies that the timestamp is within the configured replay-protection window.</li>
           <li>Stores the webhook.</li>
           <li>Responds immediately.</li>
           <li>Processes it asynchronously.</li>
-          <li>Retrieves the current Revolut order before advancing booking state.</li>
+          <li>Retrieves the current payment state before advancing booking state.</li>
         </ol>
 
-        <p>Revolut says webhook ordering is not guaranteed and failed delivery is retried, so our workflow must depend on current order state—not webhook arrival order. <a href="https://developer.revolut.com/docs/guides/merchant/monitor-and-observe/webhooks/using-webhooks">Webhook behaviour</a></p>
+        <p>Assume webhooks can be duplicated, delayed, retried, or delivered out of order. The workflow must depend on the provider’s current payment state, not webhook arrival order.</p>
 
-        <p>Revolut signs callbacks using <code>Revolut-Signature</code> and <code>Revolut-Request-Timestamp</code>; its documentation recommends HMAC-SHA256 verification and a five-minute timestamp tolerance. <a href="https://developer.revolut.com/docs/guides/merchant/monitor-and-observe/webhooks/verify-the-payload-signature">Webhook signature verification</a></p>
+        <p>Verify callbacks using the provider’s documented signature mechanism and timestamp tolerance. Keep this logic inside the adapter because header names, algorithms, key rotation, and replay-protection rules differ between providers.</p>
 
         <h2>9. Idempotency</h2>
 
@@ -414,10 +413,10 @@ WHERE (
 
         <h3>Payment operations</h3>
 
-        <pre><code>UNIQUE (revolut_order_id)
+        <pre><code>UNIQUE (payment_order_id)
 UNIQUE (booking_id)</code></pre>
 
-        <p>Only one Revolut order is active for a booking. State transitions use compare-and-set/version checks. Revolut documents capture as idempotent for repeated requests with the same amount. <a href="https://developer.revolut.com/docs/merchant/2023-09-01/capture-order">Capture semantics</a></p>
+        <p>Only one active payment is allowed for a booking. State transitions use compare-and-set/version checks. Capture and cancellation requests carry stable idempotency keys; after an ambiguous response, reconcile provider state before retrying.</p>
 
         <h2>10. Unreliable supplier failure modes</h2>
 
@@ -437,7 +436,7 @@ UNIQUE (booking_id)</code></pre>
 
         <ul>
           <li>Retry confirmation with bounded backoff until shortly before hold expiry.</li>
-          <li>If it cannot be confirmed, cancel the Revolut order and release the hold.</li>
+          <li>If it cannot be confirmed, cancel the payment authorisation and release the hold.</li>
           <li>Tell the customer the booking could not be confirmed.</li>
         </ul>
 
@@ -445,25 +444,25 @@ UNIQUE (booking_id)</code></pre>
 
         <p>Query reservation status by <code>booking_id</code>. Never issue another reservation blindly.</p>
 
-        <h3>Supplier confirms, Revolut capture fails</h3>
+        <h3>Supplier confirms, payment capture fails</h3>
 
         <ul>
-          <li>Reconcile the Revolut order.</li>
+          <li>Reconcile the payment with the provider.</li>
           <li>If definitively uncaptured, cancel the supplier booking.</li>
           <li>If either result remains ambiguous, use <code>MANUAL_REVIEW</code>.</li>
           <li>Never display <code>CONFIRMED</code> until reconciled.</li>
         </ul>
 
-        <h3>Revolut webhook is missing</h3>
+        <h3>Payment webhook is missing</h3>
 
-        <p>A reconciliation worker polls Revolut for non-terminal payments whose state has not changed within the expected window.</p>
+        <p>A reconciliation worker polls the payment provider for non-terminal payments whose state has not changed within the expected window.</p>
 
         <h3>Customer abandons checkout</h3>
 
         <p>When the 15-minute timer expires:</p>
 
         <ul>
-          <li>Cancel the pending or authorised Revolut order.</li>
+          <li>Cancel the pending payment or release the authorisation.</li>
           <li>Release the supplier hold.</li>
           <li>Mark the booking <code>CANCELLED</code>.</li>
         </ul>
@@ -477,7 +476,7 @@ UNIQUE (booking_id)</code></pre>
         <p>The fallback flow is:</p>
 
         <ol>
-          <li>Create a Revolut order with manual capture.</li>
+          <li>Create a payment with manual capture.</li>
           <li>Customer authorises payment.</li>
           <li>Attempt an atomic supplier booking.</li>
           <li>On success, capture payment.</li>
@@ -497,7 +496,7 @@ UNIQUE (booking_id)</code></pre>
           <li>PostgreSQL</li>
           <li>Optional Redis for search</li>
           <li>Database-backed workflow jobs</li>
-          <li>Supplier and Revolut adapters</li>
+          <li>Supplier and payment-provider adapters</li>
         </ul>
 
         <p>Split later only when justified:</p>

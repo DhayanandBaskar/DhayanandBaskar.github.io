@@ -101,7 +101,7 @@ export default function Home() {
           <SectionHeader number="04" title="Writing" id="writing-title" />
           <div className="writing-list">
             <a href="/blogs/atm-operations-system-design/"><span>System design · 20 min</span><strong>Designing a Reliable ATM Operations System</strong><em>Read ↗</em></a>
-            <a href="/blogs/room-rental-system-design/"><span>System design · 24 min</span><strong>Room Rental with Unreliable Inventory and Revolut Payments</strong><em>Read ↗</em></a>
+            <a href="/blogs/room-rental-system-design/"><span>System design · 24 min</span><strong>Room Rental with Unreliable Inventory and a Payment Provider</strong><em>Read ↗</em></a>
           </div>
           <a className="inline-link" href="/blogs/">Browse all engineering notes ↗</a>
         </section>
