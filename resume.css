@@ -72,6 +72,7 @@ h1 { margin: 0; font-size: clamp(58px, 7.8vw, 84px); font-weight: 800; line-heig
 .role time { color: var(--muted); font: 600 10.5px/1.2 var(--font-geist-mono), monospace; white-space: nowrap; }
 .role ul { margin: 17px 0 0; padding-left: 17px; }
 .role li { margin-bottom: 10px; padding-left: 3px; color: #344741; font-size: 13px; line-height: 1.5; }
+.role li strong { color: var(--ink); font-weight: 800; }
 .role li::marker { color: var(--green); }
 .expertise-column { padding-left: 24px; border-left: 1px solid var(--line); }
 .skill-group + .skill-group { margin-top: 15px; }

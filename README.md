@@ -1,100 +1,95 @@
-# vinext-starter
+# Resume and portfolio maintenance
 
-A clean full-stack starter running on
-[vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
-Drizzle support.
+This repository contains the public portfolio, engineering articles, HTML resume, and downloadable PDF resume for Dhayanand Baskar.
 
-## Prerequisites
+This file is an internal editing guide. Do not link it from the website or the resume.
 
-- Node.js `>=22.13.0`
+## Positioning
 
-## Quick Start
+- Present Dhayanand as a Senior Software Engineer with strong product ownership and distributed-systems depth.
+- Use `Software Engineer` or `Full-stack Software Engineer` for roles that included frontend and backend work. Do not narrow the profile to `Backend Engineer`.
+- Make ownership explicit when it is true. At Personio, Dhayanand was the main engineering driver for the capabilities described, not merely a contributor.
+- Show end-to-end scope: problem framing, user workflows, architecture, implementation, data, integrations, rollout, observability, migration, and production operation.
+
+## Resume rules
+
+### Optimize for the 30-second scan
+
+- Put current and strongest work first.
+- Lead bullets with the most important signal: ownership, outcome, scale, or technical difficulty.
+- Keep the strongest numbers easy to find, especially `2M+`, `~70% P95`, `~60% P99`, `three days to four hours`, and `3B+ platform scale`.
+- Use selective bolding for the signal, not entire sentences.
+
+### One distinct signal per bullet
+
+Each bullet should prove something different. Prefer this mix:
+
+1. Primary ownership and product scope.
+2. A measurable user or business outcome.
+3. Scale or performance.
+4. Correctness, reliability, or operational maturity.
+5. Cross-functional influence or a difficult architectural decision.
+
+Remove bullets that repeat a responsibility without adding new evidence.
+
+### Write evidence, not job descriptions
+
+Use this structure when possible:
+
+`Action and ownership + problem or constraint + technical choice + outcome`
+
+Good:
+
+> Main engineering driver for absence-management capabilities, owning problem framing through production operation.
+
+Weak:
+
+> Worked on absence-management features.
+
+### Ownership language
+
+- Use `main engineering driver`, `owned`, `led`, `designed`, or `initiated` only when accurate.
+- State personal contributions separately from team or company context.
+- Do not imply that a company-scale metric was caused by one project. For example, describe Grab's 3B+ rides as the platform scale at which the work operated.
+- Name collaboration when it demonstrates influence: Product, Design, Payroll, Reporting, domain specialists, or platform teams.
+
+### Metrics and claims
+
+- Prefer verified numbers and meaningful before-and-after comparisons.
+- Do not force metrics onto work whose value is better shown through scope, correctness, or complexity.
+- Keep terminology consistent between the website and PDF.
+- Never invent revenue, adoption, latency, scale, or leadership claims.
+
+### Experience depth
+
+- Give the most space to Personio and Forto.
+- Keep Thoughtworks / Grab focused on real-time marketplace work and the end-to-end driver-recognition initiative.
+- Compress older Whatfix and Mphasis experience to preserve chronology without burying current evidence.
+- Skills listed in the sidebar must be supported by work described somewhere in the resume or portfolio.
+
+## Website rules
+
+- The website may provide more narrative detail than the two-page resume, but the claims and numbers must match.
+- Keep the visual style simple, editorial, and personal. Avoid generic AI landing-page patterns, gradients, excessive cards, animation, or decorative effects.
+- Keep the profile photo in color.
+- Keep engineering articles under `/blogs/` and the downloadable resume at `/Dhayanand-Baskar-Resume.pdf`.
+- Do not expose private notes, employer documents, interview preparation, or this maintenance guide through website navigation.
+
+## PDF quality bar
+
+- Preserve the current two-page A4 format.
+- Generate the PDF from `resume.html` using the print rules in `resume.css`.
+- Check both rendered pages visually after every content or layout change.
+- Confirm that no text is clipped, no section crosses a page boundary, URLs remain readable, and the page count is exactly two.
+- Keep the PDF download cache version in `index.html`, `app/page.tsx`, and `resume.html` synchronized.
+
+## Validation and publishing
+
+Before publishing:
 
 ```bash
-npm install
-npm run dev
-npm run build
+npm test
+git diff --check
 ```
 
-This starter does not use `wrangler.jsonc`.
-
-## Included Shape
-
-- edit site code under `app/`
-- `.openai/hosting.json` declares optional Sites D1 and R2 bindings
-- `vite.config.ts` simulates declared bindings for local development
-- `db/schema.ts` starts intentionally empty
-- `examples/d1/` contains an optional D1 example surface
-- `drizzle.config.ts` supports local migration generation when needed
-
-## Workspace Auth Headers
-
-Signed-in visitors receive both `oai-authenticated-user-id` and `oai-authenticated-user-email`. Private Sites require every visitor to sign in; public Sites may also have anonymous visitors, for whom neither header is present.
-
-The user ID is stable for the same user on the same Site and different across Sites. Email and name are intended for display or contact purposes.
-
-SIWC-authenticated workspace sites may also receive
-`oai-authenticated-user-full-name` when the user's SIWC profile has a non-empty
-`name` claim. The full-name value is percent-encoded UTF-8 and is accompanied by
-`oai-authenticated-user-full-name-encoding: percent-encoded-utf-8`.
-
-Treat the full name as optional and fall back to email when it is absent:
-
-```tsx
-import { headers } from "next/headers";
-
-export default async function Home() {
-  const requestHeaders = await headers();
-  const userId = requestHeaders.get("oai-authenticated-user-id");
-  const email = requestHeaders.get("oai-authenticated-user-email");
-  const encodedFullName = requestHeaders.get("oai-authenticated-user-full-name");
-  const fullName =
-    encodedFullName &&
-    requestHeaders.get("oai-authenticated-user-full-name-encoding") ===
-      "percent-encoded-utf-8"
-      ? decodeURIComponent(encodedFullName)
-      : null;
-
-  const displayName = fullName ?? email;
-  // ...
-}
-```
-
-## Optional Dispatch-Owned ChatGPT Sign-In
-
-Import the ready-to-use helpers from `app/chatgpt-auth.ts` when the site needs
-optional or required ChatGPT sign-in:
-
-- Use `getChatGPTUser()` for optional signed-in UI.
-- Use `requireChatGPTUser(returnTo)` for server-rendered pages that should send
-  anonymous visitors through Sign in with ChatGPT.
-- Use `chatGPTSignInPath(returnTo)` and `chatGPTSignOutPath(returnTo)` for
-  browser links or actions.
-- Pass a same-origin relative `returnTo` path for the destination after sign-in
-  or sign-out. The helper validates and safely encodes it.
-- Mark protected pages with `export const dynamic = "force-dynamic"` because
-  they depend on per-request identity headers.
-
-Dispatch owns `/signin-with-chatgpt`, `/signout-with-chatgpt`, `/callback`, the
-OAuth cookies, and identity header injection. Do not implement app routes for
-those reserved paths. Routes that do not import and call the helper remain
-anonymous-compatible.
-
-SIWC establishes identity only; it does not prove workspace membership. Use the
-Sites hosting platform's access policy controls for workspace-wide restrictions,
-or enforce explicit server-side membership or allowlist checks.
-
-Use SIWC for account pages, user-specific dashboards, saved records, and write
-actions tied to the current ChatGPT user. Leave public content anonymous.
-
-## Useful Commands
-
-- `npm run dev`: start local development
-- `npm run build`: verify the vinext build output
-- `npm test`: build the starter and verify its rendered loading skeleton
-- `npm run db:generate`: generate Drizzle migrations after schema changes
-
-## Learn More
-
-- [vinext Documentation](https://github.com/cloudflare/vinext)
-- [Drizzle D1 Guide](https://orm.drizzle.team/docs/get-started/d1-new)
+Then verify the generated PDF visually, commit only intended files, and push `master` to the personal GitHub remote. Personal-repository commits do not require GPG signing.

@@ -10,7 +10,13 @@ const work = [
     location: "Berlin",
     company: "Personio",
     title: "Senior Software Engineer",
-    copy: "I own absence-management capabilities from problem framing to production. Recent work includes balance materialization for payroll and reporting, API performance, and reliable event-driven integrations.",
+    copy: "I am the main engineering driver for absence-management capabilities, owning them from problem framing and architecture through implementation, migration, rollout, and production operations.",
+    highlights: [
+      ["Balance materialization at scale.", "Led the move from expensive read-time calculations to temporal snapshots for more than two million employee balances used by payroll and reporting. Priority-aware processing protected interactive changes during bulk work, reduced P95 latency by roughly 70%, and made million-employee backfills possible in hours rather than days."],
+      ["Correctness beyond launch.", "Built continuous verification that compares stored balances with live calculations, categorizes discrepancies, and drives dashboards, alerts, and runbooks. Reworked a fragile three-day bug-impact analysis into a resumable process that completes in about four hours."],
+      ["Holiday data as a platform.", "Sequenced a payroll-critical initiative from historically correct employee holidays, through automated third-party holiday maintenance, to targeted change propagation for Time Off, Attendance, Overtime, and Payroll."],
+      ["Reliable event delivery.", "Introduced transactional-outbox publishing to prevent sporadically missed updates and used FIFO message grouping to avoid concurrent processing for the same employee, contributing reusable support to the company framework."],
+    ],
     keywords: "Product ownership / Java & Kotlin / TypeScript / Distributed systems / PostgreSQL",
   },
   {
@@ -18,7 +24,12 @@ const work = [
     location: "Berlin",
     company: "Forto",
     title: "Full-stack Software Engineer",
-    copy: "Built operational workflows, services, data models, and integrations for transportation management, shipment visibility, and external partner booking.",
+    copy: "Built transportation-management products across operational interfaces, backend services, domain models, and external partner integrations.",
+    highlights: [
+      ["Reliable shipment visibility.", "Designed event-ingestion flows that normalized tracking updates from multiple partners and remained correct when events arrived late, duplicated, or out of order."],
+      ["Long-running partner bookings.", "Modelled booking workflows as explicit state machines with safe transitions, retries, reconciliation, and failure recovery instead of hiding the process behind a single request."],
+      ["From manual operations to software.", "Used domain-driven design and event storming with logistics specialists to build a shared Transport Plan model and automate workflows incrementally."],
+    ],
     keywords: "Full stack / State machines / Event ingestion / Domain-driven design",
   },
   {
@@ -26,7 +37,12 @@ const work = [
     location: "Bengaluru",
     company: "Thoughtworks / Grab",
     title: "Full-stack Software Engineer",
-    copy: "Built Android and backend capabilities for real-time driver order delivery, assignment, incentives, navigation, and the ride lifecycle.",
+    copy: "Worked on Grab’s driver platform as it passed three billion completed rides across Southeast Asia, building Android experiences and the services behind them.",
+    highlights: [
+      ["Real-time driver marketplace.", "Built parts of the order lifecycle across Android and backend systems, from delivery and assignment through acceptance, rejection, navigation, and completion."],
+      ["Driver recognition, end to end.", "As the sole engineer, partnered directly with product and design to shape milestones, streaks, and profile badges, then built the Android flow, APIs, metric aggregation, milestone detection, and badge awarding."],
+      ["Cross-system delivery.", "Improved driver navigation and contributed to a Google ride-hailing integration that required coordinated changes across the mobile app, backend APIs, and partner systems."],
+    ],
     keywords: "Android / Backend services / Real-time systems / Marketplace",
   },
 ];
@@ -48,7 +64,7 @@ export default function Home() {
       <header className="site-header page-shell">
         <a className="site-name" href="#top">Dhayanand Baskar</a>
         <nav aria-label="Primary navigation">
-          <a href="#work">Work</a><a href="/blogs/">Writing</a><a href="/Dhayanand-Baskar-Resume.pdf?v=4" download="Dhayanand-Baskar-Resume.pdf">Resume ↓</a>
+          <a href="#work">Work</a><a href="/blogs/">Writing</a><a href="/Dhayanand-Baskar-Resume.pdf?v=5" download="Dhayanand-Baskar-Resume.pdf">Resume ↓</a>
         </nav>
       </header>
 
@@ -83,11 +99,18 @@ export default function Home() {
             {work.map((role) => (
               <article className="work-item" key={role.company}>
                 <div className="work-meta"><time>{role.period}</time><span>{role.location}</span></div>
-                <div className="work-copy"><h3>{role.company} <span>{role.title}</span></h3><p>{role.copy}</p><p className="keywords">{role.keywords}</p></div>
+                <div className="work-copy">
+                  <h3>{role.company} <span>{role.title}</span></h3>
+                  <p>{role.copy}</p>
+                  <ul className="work-highlights">
+                    {role.highlights.map(([title, copy]) => <li key={title}><b>{title}</b> {copy}</li>)}
+                  </ul>
+                  <p className="keywords">{role.keywords}</p>
+                </div>
               </article>
             ))}
           </div>
-          <a className="inline-link" href="/Dhayanand-Baskar-Resume.pdf?v=4" download="Dhayanand-Baskar-Resume.pdf">Full work history in the PDF resume ↓</a>
+          <a className="inline-link" href="/Dhayanand-Baskar-Resume.pdf?v=5" download="Dhayanand-Baskar-Resume.pdf">Full work history in the PDF resume ↓</a>
         </section>
 
         <section className="content-section principles" aria-labelledby="principles-title">

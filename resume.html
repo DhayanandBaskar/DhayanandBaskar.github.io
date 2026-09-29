@@ -11,7 +11,7 @@
     <meta property="og:image" content="https://dhayanandbaskar.github.io/og.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg?v=2" />
-    <link rel="stylesheet" href="resume.css?v=4" />
+    <link rel="stylesheet" href="resume.css?v=5" />
   </head>
   <body>
     <main class="site-shell">
@@ -26,7 +26,7 @@
         <div class="toolbar-actions">
           <a class="secondary-button" href="blogs/">Blogs</a>
           <a class="secondary-button" href="mailto:dhayanand.baskar@gmail.com">Let's talk</a>
-          <a class="download-button" href="Dhayanand-Baskar-Resume.pdf?v=4" download="Dhayanand-Baskar-Resume.pdf" aria-label="Download Dhayanand Baskar resume as a PDF"><span aria-hidden="true">↓</span> Download PDF</a>
+          <a class="download-button" href="Dhayanand-Baskar-Resume.pdf?v=5" download="Dhayanand-Baskar-Resume.pdf" aria-label="Download Dhayanand Baskar resume as a PDF"><span aria-hidden="true">↓</span> Download PDF</a>
         </div>
       </nav>
 
@@ -37,7 +37,7 @@
             <div class="identity">
               <p class="eyebrow">Senior Software Engineer · Product &amp; Distributed Systems</p>
               <h1>Dhayanand<br />Baskar</h1>
-              <p class="hero-statement">Building products end to end-from user workflows and APIs to distributed systems that stay reliable at scale.</p>
+              <p class="hero-statement">Building products end to end, from user workflows and APIs to distributed systems that stay reliable at scale.</p>
             </div>
             <div class="contact-block">
               <p>Berlin, Germany</p>
@@ -65,20 +65,19 @@
               <div class="role">
                 <div class="role-heading"><div><h3>Personio</h3><p>Senior Software Engineer · Berlin</p></div><time>Jun 2022 - Present</time></div>
                 <ul>
-                  <li>Owned end-to-end delivery of absence-management product capabilities, translating employee, HR, payroll, and reporting needs into user workflows, domain models, APIs, data, integrations, rollout, observability, and production support.</li>
-                  <li>Reduced Absence Balance API latency by ~70% at P95 and ~60% at P99 through query optimization, batching, workload isolation, and database-level tuning-eliminating timeout failures for a high-impact customer.</li>
-                  <li>Led the design and delivery of a materialization platform covering 2M+ employee time-off and vacation balances, replacing expensive real-time aggregation with reporting-ready data used by payroll and reporting.</li>
-                  <li>Strengthened event-driven data pipelines with idempotent consumers, retry-safe synchronization, reconciliation, observability, and reliable downstream payroll and calendar integrations.</li>
-                  <li>Drove initiatives from problem framing through rollout: partnering with Product and cross-functional stakeholders, defining scope and trade-offs, reviewing architecture, mentoring engineers, instrumenting outcomes, and supporting production incidents.</li>
+                  <li><strong>Main engineering driver</strong> for absence-management capabilities, owning problem framing, technical direction, implementation, migrations, rollout, observability, and production support across employee, HR, payroll, and reporting workflows.</li>
+                  <li>Reduced Absence Balance API latency by <strong>~70% at P95 and ~60% at P99</strong> through query optimization, batching, workload isolation, and database tuning, eliminating timeout failures for a high-impact customer.</li>
+                  <li>Led a materialization platform covering <strong>2M+ employee time-off and vacation balances</strong>, replacing expensive read-time calculation with reporting-ready snapshots used by payroll and reporting; priority-aware processing completed million-employee backfills in hours rather than days.</li>
+                  <li>Built continuous verification for stored and live balance calculations, with discrepancy classification, dashboards, alerts, and runbooks; redesigned a fragile bug-impact analysis from <strong>three days to about four hours</strong>.</li>
+                  <li>Drove a <strong>payroll-critical holiday platform</strong> from historically correct employee-office logic through automated third-party maintenance and targeted change propagation to Time Off, Attendance, Overtime, and Payroll.</li>
                 </ul>
               </div>
               <div class="role">
                 <div class="role-heading"><div><h3>Forto</h3><p>Full-stack Software Engineer · Berlin</p></div><time>Sep 2019 - May 2022</time></div>
                 <ul>
-                  <li>Built full-stack product capabilities for transportation management, real-time shipment visibility, and external partner booking, spanning operational user workflows, APIs, domain logic, and integrations.</li>
+                  <li><strong>Owned full-stack delivery</strong> of transportation-management capabilities spanning operational workflows, APIs, services, domain models, and external partner integrations.</li>
                   <li>Designed event-ingestion flows that normalized third-party tracking updates and remained correct when events arrived late, duplicated, or out of order.</li>
-                  <li>Modeled multi-step partner bookings as long-running, event-driven state machines with explicit transitions, retry policies, reconciliation, and failure recovery.</li>
-                  <li>Used domain-driven design and event storming with logistics leaders to create a scalable Transport Plan model and incrementally automate operational workflows.</li>
+                  <li>Modelled long-running partner bookings as explicit state machines with safe transitions, retries, reconciliation, and failure recovery; used domain-driven design and event storming with logistics specialists to build a shared Transport Plan model and automate workflows incrementally.</li>
                 </ul>
               </div>
             </section>
@@ -88,7 +87,7 @@
               <div class="skill-group"><h3>Product &amp; architecture</h3><p>End-to-End Delivery<br />Distributed Systems<br />Event-Driven Architecture<br />Domain-Driven Design<br />State Machines · REST APIs</p></div>
               <div class="skill-group"><h3>Languages</h3><p>Java · Kotlin<br />TypeScript · JavaScript<br />Node.js · Spring Boot</p></div>
               <div class="skill-group"><h3>Data &amp; platform</h3><p>PostgreSQL · MySQL<br />Oracle · MongoDB<br />AWS · Kubernetes<br />Messaging · CI/CD</p></div>
-              <div class="skill-group"><h3>Scale patterns</h3><p>Sharding · Partitioning<br />Caching · Materialization<br />Idempotency · Retries<br />Eventual Consistency<br />Schema Evolution</p></div>
+              <div class="skill-group"><h3>Scale patterns</h3><p>Caching · Materialization<br />Idempotency · Retries<br />Outbox · Reconciliation<br />Eventual Consistency<br />Workload Isolation</p></div>
               <div class="skill-group"><h3>Engineering</h3><p>Performance Tuning<br />Reliability · Observability<br />Automated Testing<br />Incident Response<br />Technical Leadership<br />Mentoring · Design Reviews</p></div>
             </aside>
           </div>
@@ -107,38 +106,34 @@
               <div class="role">
                 <div class="role-heading"><div><h3>Thoughtworks / Grab</h3><p>Full-stack Software Engineer · Bengaluru</p></div><time>Dec 2017 - Sep 2019</time></div>
                 <ul>
-                  <li>Worked on Grab’s driver team as the platform crossed 3B rides across Southeast Asia in January 2019; built Android and backend capabilities for real-time order delivery and the assignment lifecycle from offer through acceptance, rejection, and completion.</li>
-                  <li>Led the Driver Incentive initiative across product and engineering, translating complex incentive rules into driver-facing experiences and supporting microservices.</li>
-                  <li>Improved driver navigation flows and contributed to Google ride-hailing integration, coordinating changes across Android, backend APIs, and external systems.</li>
-                  <li>Worked in a high-volume marketplace where low-latency dispatch, fault tolerance, and service reliability directly affected drivers, customers, and marketplace liquidity.</li>
+                  <li>Built Android and backend capabilities for real-time order delivery and the assignment lifecycle from offer through acceptance, rejection, navigation, and completion while Grab operated at <strong>3B+ completed rides</strong> across Southeast Asia.</li>
+                  <li>As the <strong>sole engineer for driver recognition</strong>, partnered directly with Product and Design to shape milestones, streaks, and profile badges, then delivered the Android flow, APIs, metric aggregation, milestone detection, and badge awarding.</li>
+                  <li>Improved driver navigation and contributed to a Google ride-hailing integration, coordinating changes across the mobile app, backend APIs, and partner systems.</li>
                 </ul>
               </div>
               <div class="role">
                 <div class="role-heading"><div><h3>Whatfix</h3><p>Full-stack Software Engineer · Bengaluru</p></div><time>May 2017 - Dec 2017</time></div>
                 <ul>
-                  <li>Developed an analytics platform for collecting, processing, and presenting engagement data from Whatfix’s SaaS onboarding and interactive guidance products.</li>
-                  <li>Built full-stack capabilities spanning instrumentation, backend APIs, data aggregation, and user-facing reporting for product-usage insights.</li>
-                  <li>Partnered across teams to deliver scalable, algorithm-driven product features with maintainable interfaces and testable business logic.</li>
+                  <li>Built a full-stack product-analytics platform spanning instrumentation, backend APIs, data aggregation, and user-facing reporting for engagement with Whatfix's SaaS onboarding and interactive guidance products.</li>
                 </ul>
               </div>
               <div class="role">
                 <div class="role-heading"><div><h3>Mphasis</h3><p>Full-stack Software Engineer · Pune</p></div><time>Jul 2014 - May 2017</time></div>
                 <ul>
-                  <li>Developed a full-stack telecom ordering system for Sprint, contributing across order capture, validation, enterprise workflows, backend service orchestration, relational data access, and user-facing capabilities.</li>
-                  <li>Delivered features within a large enterprise codebase, collaborating with distributed teams and balancing new functionality with compatibility, testing, and production stability.</li>
+                  <li>Built full-stack capabilities for Sprint's telecom ordering system across order capture, validation, enterprise workflows, backend orchestration, relational data, and user-facing interfaces while preserving compatibility and production stability.</li>
                 </ul>
               </div>
             </section>
 
             <aside class="architecture-column">
-              <h2 class="section-title"><span>05</span>Systems thinking</h2>
-              <p class="aside-intro">Designs for scale from first principles, balancing correctness, latency, operability, and cost.</p>
+              <h2 class="section-title"><span>05</span>Evidence of ownership</h2>
+              <p class="aside-intro">Leads difficult work from an ambiguous problem to a measurable, operable production system.</p>
               <div class="numbered-list">
-                <div><span>01</span><p><strong>Partition intelligently</strong>Geo-partition for residency and latency; hash-shard by stable, high-cardinality identifiers to distribute load.</p></div>
-                <div><span>02</span><p><strong>Make events safe</strong>Use idempotency, deduplication, versioning, retries, and reconciliation for delayed or out-of-order delivery.</p></div>
-                <div><span>03</span><p><strong>Design for operations</strong>Build in SLOs, metrics, traces, alerting, runbooks, failure isolation, and controlled degradation.</p></div>
-                <div><span>04</span><p><strong>Evolve with evidence</strong>Profile before optimizing; use caching, precomputation, batching, indexes, and workload separation deliberately.</p></div>
-                <div><span>05</span><p><strong>Route and rebalance</strong>Use shard metadata, virtual partitions, controlled data movement, and dual-read or dual-write migrations to scale without downtime.</p></div>
+                <div><span>01</span><p><strong>Set direction</strong>Authored designs and phased technical roadmaps for balance materialization and holiday-data platforms.</p></div>
+                <div><span>02</span><p><strong>Protect correctness</strong>Built continuous verification, discrepancy classification, and recovery workflows for payroll-sensitive data.</p></div>
+                <div><span>03</span><p><strong>Operate what ships</strong>Defined dashboards, alerts, runbooks, backfills, and production-support paths alongside implementation.</p></div>
+                <div><span>04</span><p><strong>Simplify deliberately</strong>Used transactional outbox and FIFO grouping to make event delivery reliable without custom locking.</p></div>
+                <div><span>05</span><p><strong>Bring teams along</strong>Coordinated Product, Payroll, Reporting, and platform consumers through migrations and staged rollouts.</p></div>
               </div>
             </aside>
           </div>
