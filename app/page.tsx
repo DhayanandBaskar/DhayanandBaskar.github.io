@@ -24,13 +24,13 @@ const work = [
     location: "Berlin",
     company: "Forto",
     title: "Full-stack Software Engineer",
-    copy: "Built transportation-management products across operational interfaces, backend services, domain models, and external partner integrations.",
+    copy: "Built and operated TypeScript and Node.js services on GCP in production for a year, delivering transportation-management products across operational interfaces, backend services, domain models, and external partner integrations.",
     highlights: [
-      ["Reliable shipment visibility.", "Designed event-ingestion flows that normalized tracking updates from multiple partners and remained correct when events arrived late, duplicated, or out of order."],
+      ["Reliable shipment visibility.", "Using TypeScript and Node.js on GCP, designed event-ingestion flows that normalized tracking updates from multiple partners and remained correct when events arrived late, duplicated, or out of order."],
       ["Long-running partner bookings.", "Modelled booking workflows as explicit state machines with safe transitions, retries, reconciliation, and failure recovery instead of hiding the process behind a single request."],
       ["From manual operations to software.", "Used domain-driven design and event storming with logistics specialists to build a shared Transport Plan model and automate workflows incrementally."],
     ],
-    keywords: "Full stack / State machines / Event ingestion / Domain-driven design",
+    keywords: "TypeScript / Node.js / GCP / Full stack / State machines / Event ingestion",
   },
   {
     period: "2017—2019",
@@ -64,7 +64,7 @@ export default function Home() {
       <header className="site-header page-shell">
         <a className="site-name" href="#top">Dhayanand Baskar</a>
         <nav aria-label="Primary navigation">
-          <a href="#work">Work</a><a href="/blogs/">Writing</a><a href="/Dhayanand-Baskar-Resume.pdf?v=5" download="Dhayanand-Baskar-Resume.pdf">Resume ↓</a>
+          <a href="#work">Work</a><a href="/blogs/">Writing</a><a href="/Dhayanand-Baskar-Resume.pdf?v=6" download="Dhayanand-Baskar-Resume.pdf">Resume ↓</a>
         </nav>
       </header>
 
@@ -77,7 +77,7 @@ export default function Home() {
           <div className="intro-copy">
             <p className="overline">Hello / 2026</p>
             <h1>Software engineer building products, platforms, and the systems behind them.</h1>
-            <p className="intro-text">I have spent 12+ years turning messy business problems into software people can use and teams can operate. I work end to end: product discovery, user workflows, APIs, data, integrations, distributed systems, rollout, and production.</p>
+            <p className="intro-text">I have spent 12+ years turning messy business problems into software people can use and teams can operate. I work end to end: product discovery, user workflows, APIs, data, integrations, distributed systems, rollout, and production. My production experience spans Java and Kotlin platforms as well as TypeScript and Node.js services on GCP.</p>
             <div className="contact-links">
               <a href="mailto:dhayanand.baskar@gmail.com">Email me ↗</a>
               <a href="https://linkedin.com/in/dhayanandbaskar" target="_blank" rel="noreferrer">LinkedIn ↗</a>
@@ -110,7 +110,7 @@ export default function Home() {
               </article>
             ))}
           </div>
-          <a className="inline-link" href="/Dhayanand-Baskar-Resume.pdf?v=5" download="Dhayanand-Baskar-Resume.pdf">Full work history in the PDF resume ↓</a>
+          <a className="inline-link" href="/Dhayanand-Baskar-Resume.pdf?v=6" download="Dhayanand-Baskar-Resume.pdf">Full work history in the PDF resume ↓</a>
         </section>
 
         <section className="content-section principles" aria-labelledby="principles-title">
