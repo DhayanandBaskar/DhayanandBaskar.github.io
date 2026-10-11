@@ -19,7 +19,10 @@ I built Still for the part after writing: reading.
 
 Open a Markdown file, follow its heading outline, or switch to focus mode and settle into the text. Choose light, dark, or system appearance, and adjust the type to suit you. Still stays read-only while your editor does the writing.
 
-This is a personal Mac build, currently for Apple silicon. Details and a build on request: https://dhayanandbaskar.github.io/apps/still/
+It’s native Swift, free, and open source under Apache 2.0. The download supports macOS 13+ on Apple silicon; Intel users can build from source.
+
+Download and setup: https://dhayanandbaskar.github.io/apps/still/
+Source: https://github.com/DhayanandBaskar/Still
 
 Five-image sequence: reader → outline → focus → typography → workflow. Use illustrations/still-01-reader.png through still-05-workflow.png.
 

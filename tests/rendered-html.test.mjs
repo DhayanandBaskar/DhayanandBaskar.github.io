@@ -105,8 +105,11 @@ test("app directory leads to rendered guides with actionable setup and public do
       assert.match(html, /API usage is billed separately/);
       assert.match(html, /Apache 2\.0/);
     } else {
-      assert.match(html, /Ask for a build/);
-      assert.doesNotMatch(html, /github\.com\/DhayanandBaskar\/Still/);
+      assert.match(html, /github\.com\/DhayanandBaskar\/Still\/releases\/latest\/download\/Still\.dmg/);
+      assert.match(html, /href="https:\/\/github\.com\/DhayanandBaskar\/Still">Source on GitHub/);
+      assert.match(html, /Apache 2\.0/);
+      assert.match(html, /Download for Apple silicon/);
+      assert.doesNotMatch(html, /Ask for a build|Current personal build|Still%20for%20Mac/);
     }
   }
 });

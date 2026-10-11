@@ -34,10 +34,12 @@ Captured on 11 October 2026. No private documents, API credentials or dictated t
 
 ## Reuse and attribution
 
-The files in this media kit are provided under Apache License 2.0; see LICENSE and NOTICE. Credit: Dhayanand Baskar. This media license does not publish or license Still’s app source. Speaklet’s app source is separately public under Apache 2.0.
+The files in this media kit are provided under Apache License 2.0; see LICENSE and NOTICE. Credit: Dhayanand Baskar. Speaklet and Still also have public app source under Apache 2.0; bundled third-party components retain their own licenses.
 
 Product pages:
 - https://dhayanandbaskar.github.io/apps/speaklet/
 - https://dhayanandbaskar.github.io/apps/still/
 
 Source for Speaklet: https://github.com/DhayanandBaskar/speaklet
+
+Source for Still: https://github.com/DhayanandBaskar/Still
