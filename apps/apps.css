@@ -97,3 +97,13 @@ kbd { font-family: var(--mono); font-size: .85em; background: #f1f2f5; border: 1
   .site-header nav { gap: 12px; }
   .site-name { font-size: 13px; }
 }
+
+.product-visuals { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; align-items: start; }
+.product-visual { margin: 0; min-width: 0; }
+.product-visual.illustration { grid-column: 1 / -1; }
+.product-visual img { width: 100%; height: auto; border: 1px solid var(--line); }
+.product-visual figcaption { display: grid; gap: 5px; color: var(--muted); font-size: 13px; line-height: 1.7; padding: 14px 0 0; }
+.product-visual figcaption span { color: var(--blue); font: 10px var(--mono); text-transform: uppercase; letter-spacing: .06em; }
+@media (max-width: 760px) { .product-visuals { grid-template-columns: 1fr; gap: 24px; } }
+
+.app-entry .app-entry-preview { display: block; width: min(100%, 560px); height: auto; margin-top: 24px; border: 1px solid var(--line); }
