@@ -64,7 +64,7 @@ export default function Home() {
       <header className="site-header page-shell">
         <a className="site-name" href="#top">Dhayanand Baskar</a>
         <nav aria-label="Primary navigation">
-          <a href="#work">Work</a><a href="/blogs/">Writing</a><a href="/Dhayanand-Baskar-Resume.pdf?v=6" download="Dhayanand-Baskar-Resume.pdf">Resume ↓</a>
+          <a href="#work">Work</a><a href="/apps/">Apps</a><a href="/blogs/">Writing</a><a href="/Dhayanand-Baskar-Resume.pdf?v=6" download="Dhayanand-Baskar-Resume.pdf">Resume ↓</a>
         </nav>
       </header>
 
@@ -127,6 +127,14 @@ export default function Home() {
             <a href="/blogs/room-rental-system-design/"><span>System design · 24 min</span><strong>Room Rental with Unreliable Inventory and a Payment Provider</strong><em>Read ↗</em></a>
           </div>
           <a className="inline-link" href="/blogs/">Browse all engineering notes ↗</a>
+        </section>
+        <section className="content-section" aria-labelledby="apps-title">
+          <SectionHeader number="05" title="Apps" id="apps-title" />
+          <div className="writing-list">
+            <a href="/apps/speaklet/"><span>macOS · Dictation</span><strong>Speaklet — Hold a key. Say it. Keep going.</strong><em>Explore ↗</em></a>
+            <a href="/apps/still/"><span>macOS · Markdown</span><strong>Still — Open the file. Find your place.</strong><em>Explore ↗</em></a>
+          </div>
+          <a className="inline-link" href="/apps/">Browse my apps and usage guides ↗</a>
         </section>
       </main>
 

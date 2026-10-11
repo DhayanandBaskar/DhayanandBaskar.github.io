@@ -2,16 +2,21 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-async function render() {
+async function render(path = "/") {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
   const { default: worker } = await import(workerUrl.href);
 
-  return worker.fetch(
-    new Request("http://localhost/", { headers: { accept: "text/html" } }),
-    { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } },
-    { waitUntil() {}, passThroughOnException() {} },
-  );
+  const env = { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } };
+  const context = { waitUntil() {}, passThroughOnException() {} };
+  const response = await worker.fetch(new Request(`http://localhost${path}`, { headers: { accept: "text/html" } }), env, context);
+  // The application normalizes a trailing slash; GitHub Pages serves directory URLs directly.
+  if (response.status === 308) {
+    const location = response.headers.get("location");
+    assert.equal(new URL(location, "http://localhost").pathname, path.replace(/\/$/, ""));
+    return worker.fetch(new Request(new URL(location, "http://localhost"), { headers: { accept: "text/html" } }), env, context);
+  }
+  return response;
 }
 
 test("server-renders the portfolio homepage", async () => {
@@ -79,4 +84,43 @@ test("keeps the writing pages in the simple portfolio theme", async () => {
   assert.match(blogIndex, /Resume ↓/);
   assert.match(atmArticle, /blog\.css\?v=4/);
   assert.match(roomArticle, /blog\.css\?v=4/);
+});
+
+
+test("app directory leads to rendered guides with actionable setup and public download", async () => {
+  const directory = await render("/apps/");
+  assert.equal(directory.status, 200);
+  const index = await directory.text();
+  assert.match(index, /href="\/apps\/speaklet\/"/);
+  assert.match(index, /href="\/apps\/still\/"/);
+  for (const path of ["/apps/speaklet/", "/apps/still/"]) {
+    const response = await render(path);
+    assert.equal(response.status, 200);
+    const html = await response.text();
+    assert.match(html, /id="get-started"/);
+    assert.match(html, /href="\/apps\/"/);
+    assert.doesNotMatch(html, /SkeletonPreview|Not found/);
+    if (path.includes("speaklet")) {
+      assert.match(html, /releases\/latest\/download\/Speaklet\.dmg/);
+      assert.match(html, /API usage is billed separately/);
+      assert.match(html, /Apache 2\.0/);
+    } else {
+      assert.match(html, /Ask for a build/);
+      assert.doesNotMatch(html, /github\.com\/DhayanandBaskar\/Still/);
+    }
+  }
+});
+
+test("GitHub Pages guides have existing local links and assets and match shared content", async () => {
+  const { appPages, pageMarkup } = await import("../content/apps.mjs");
+  const { stat } = await import("node:fs/promises");
+  for (const page of Object.values(appPages)) {
+    const html = await readFile(new URL(`..${page.path}index.html`, import.meta.url), "utf8");
+    assert.ok(html.includes(pageMarkup(page)), `Generated content differs for ${page.path}`);
+    for (const match of html.matchAll(/(?:href|src|srcset)="(\/[^"#?]+)(?:[?#][^"]*)?"/g)) {
+      const path = match[1];
+      const target = new URL(`..${path}${path.endsWith("/") ? "index.html" : ""}`, import.meta.url);
+      assert.ok((await stat(target)).isFile(), `Missing local link/asset: ${path}`);
+    }
+  }
 });

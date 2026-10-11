@@ -93,3 +93,13 @@ git diff --check
 ```
 
 Then verify the generated PDF visually, commit only intended files, and push `master` to the personal GitHub remote. Personal-repository commits do not require GPG signing.
+
+## Apps directory
+
+Product copy and markup live in `content/apps.mjs`. Run `npm run generate:apps` after editing it; the build also runs the generator. It writes the root `/apps/` HTML used by GitHub Pages and copies the shared product stylesheet to `public`. The React routes render the same authored content. Keep `apps/assets` and `public/apps/assets` aligned. Publish by pushing `master` to the personal SSH remote; GitHub Pages serves the root static files.
+
+Speaklet is public under Apache 2.0. Still is listed as a personal build, with no public repository or download link. Marketing assets and ready-to-paste copy live in the Speaklet repository under `docs/marketing`.
+
+## Source license
+
+Website source code is licensed under Apache 2.0; see LICENSE. Personal photographs, resume content, and third-party material retain their respective rights.
