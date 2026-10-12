@@ -34,7 +34,7 @@ test("server-renders the portfolio homepage", async () => {
   assert.match(html, /used by payroll and reporting/);
   assert.match(html, /Writing/);
   assert.match(html, /TypeScript and Node\.js services on GCP/);
-  assert.match(html, /Dhayanand-Baskar-Resume\.pdf\?v=6/);
+  assert.match(html, /Dhayanand-Baskar-Resume\.pdf\?v=7/);
   assert.doesNotMatch(html, /Senior Backend Engineer|Backend Software Engineer/);
   assert.doesNotMatch(html, /codex-preview|SkeletonPreview|Building your site/);
 });
@@ -54,8 +54,8 @@ test("keeps the static and application portfolio aligned and preserves the A4 re
   assert.match(staticCss, /@media \(max-width:\s*760px\)/);
   assert.match(staticCss, /prefers-reduced-motion/);
   assert.doesNotMatch(staticCss, /@keyframes|linear-gradient|border-radius/);
-  assert.match(page, /href="\/Dhayanand-Baskar-Resume\.pdf\?v=6"/);
-  assert.match(staticHtml, /href="Dhayanand-Baskar-Resume\.pdf\?v=6"/);
+  assert.match(page, /href="\/Dhayanand-Baskar-Resume\.pdf\?v=7"/);
+  assert.match(staticHtml, /href="Dhayanand-Baskar-Resume\.pdf\?v=7"/);
   assert.match(staticHtml, /styles\.css\?v=7/);
   assert.doesNotMatch(staticCss, /grayscale\(/);
   assert.match(staticHtml, /employee time-off and vacation balances/);
@@ -65,9 +65,13 @@ test("keeps the static and application portfolio aligned and preserves the A4 re
   assert.match(resumeHtml, /01 \/ 02/);
   assert.match(resumeHtml, /02 \/ 02/);
   assert.match(resumeHtml, /employee time-off and vacation balances handled by the materialization platform I led, used by payroll and reporting/);
+  assert.match(resumeHtml, /Java · Kotlin · Spring Boot/);
+  assert.match(resumeHtml, /TypeScript · Node\.js · GCP/);
+  assert.match(resumeHtml, /<strong>2M\+<\/strong>/);
+  assert.doesNotMatch(resumeHtml, /5M\+/);
   assert.match(resumeHtml, /Main engineering driver/);
   assert.match(resumeHtml, /TypeScript and Node\.js services on GCP in production for a year/);
-  assert.match(resumeHtml, /resume\.css\?v=5/);
+  assert.match(resumeHtml, /resume\.css\?v=6/);
 });
 
 test("keeps the writing pages in the simple portfolio theme", async () => {

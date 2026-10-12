@@ -17,7 +17,7 @@ const work = [
       ["Holiday data as a platform.", "Sequenced a payroll-critical initiative from historically correct employee holidays, through automated third-party holiday maintenance, to targeted change propagation for Time Off, Attendance, Overtime, and Payroll."],
       ["Reliable event delivery.", "Introduced transactional-outbox publishing to prevent sporadically missed updates and used FIFO message grouping to avoid concurrent processing for the same employee, contributing reusable support to the company framework."],
     ],
-    keywords: "Product ownership / Java & Kotlin / TypeScript / Distributed systems / PostgreSQL",
+    keywords: "Java / Kotlin / Spring Boot / TypeScript / AWS / PostgreSQL / Product ownership",
   },
   {
     period: "2019—2022",
@@ -64,7 +64,7 @@ export default function Home() {
       <header className="site-header page-shell">
         <a className="site-name" href="#top">Dhayanand Baskar</a>
         <nav aria-label="Primary navigation">
-          <a href="#work">Work</a><a href="/apps/">Apps</a><a href="/blogs/">Writing</a><a href="/Dhayanand-Baskar-Resume.pdf?v=6" download="Dhayanand-Baskar-Resume.pdf">Resume ↓</a>
+          <a href="#work">Work</a><a href="/apps/">Apps</a><a href="/blogs/">Writing</a><a href="/Dhayanand-Baskar-Resume.pdf?v=7" download="Dhayanand-Baskar-Resume.pdf">Resume ↓</a>
         </nav>
       </header>
 
@@ -110,7 +110,7 @@ export default function Home() {
               </article>
             ))}
           </div>
-          <a className="inline-link" href="/Dhayanand-Baskar-Resume.pdf?v=6" download="Dhayanand-Baskar-Resume.pdf">Full work history in the PDF resume ↓</a>
+          <a className="inline-link" href="/Dhayanand-Baskar-Resume.pdf?v=7" download="Dhayanand-Baskar-Resume.pdf">Full work history in the PDF resume ↓</a>
         </section>
 
         <section className="content-section principles" aria-labelledby="principles-title">
