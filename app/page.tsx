@@ -1,5 +1,5 @@
 const results = [
-  ["2M+", "Personio.", "Led the materialization platform for employee time-off and vacation balances used by payroll and reporting."],
+  ["4M+", "Personio.", "Led the materialization platform for employee time-off and vacation balances used by payroll and reporting."],
   ["~70%", "Personio.", "Reduced P95 latency for a critical Absence Balance API through query, batching, workload, and database improvements."],
   ["3B+", "Thoughtworks / Grab.", "Built real-time driver order assignment and lifecycle systems while the platform operated at billions of completed rides."],
 ];
@@ -12,7 +12,7 @@ const work = [
     title: "Senior Software Engineer",
     copy: "I am the main engineering driver for absence-management capabilities, owning them from problem framing and architecture through implementation, migration, rollout, and production operations.",
     highlights: [
-      ["Balance materialization at scale.", "Led the move from expensive read-time calculations to temporal snapshots for more than two million employee balances used by payroll and reporting. Priority-aware processing protected interactive changes during bulk work, reduced P95 latency by roughly 70%, and made million-employee backfills possible in hours rather than days."],
+      ["Balance materialization at scale.", "Led the move from expensive read-time calculations to temporal snapshots for more than four million employee balances used by payroll and reporting. Priority-aware processing protected interactive changes during bulk work, reduced P95 latency by roughly 70%, and made million-employee backfills possible in hours rather than days."],
       ["Correctness beyond launch.", "Built continuous verification that compares stored balances with live calculations, categorizes discrepancies, and drives dashboards, alerts, and runbooks. Reworked a fragile three-day bug-impact analysis into a resumable process that completes in about four hours."],
       ["Holiday data as a platform.", "Sequenced a payroll-critical initiative from historically correct employee holidays, through automated third-party holiday maintenance, to targeted change propagation for Time Off, Attendance, Overtime, and Payroll."],
       ["Reliable event delivery.", "Introduced transactional-outbox publishing to prevent sporadically missed updates and used FIFO message grouping to avoid concurrent processing for the same employee, contributing reusable support to the company framework."],
@@ -64,7 +64,7 @@ export default function Home() {
       <header className="site-header page-shell">
         <a className="site-name" href="#top">Dhayanand Baskar</a>
         <nav aria-label="Primary navigation">
-          <a href="#work">Work</a><a href="/apps/">Apps</a><a href="/blogs/">Writing</a><a href="/Dhayanand-Baskar-Resume.pdf?v=7" download="Dhayanand-Baskar-Resume.pdf">Resume ↓</a>
+          <a href="#work">Work</a><a href="/apps/">Apps</a><a href="/blogs/">Writing</a><a href="/Dhayanand-Baskar-Resume.pdf?v=8" download="Dhayanand-Baskar-Resume.pdf">Resume ↓</a>
         </nav>
       </header>
 
@@ -110,7 +110,7 @@ export default function Home() {
               </article>
             ))}
           </div>
-          <a className="inline-link" href="/Dhayanand-Baskar-Resume.pdf?v=7" download="Dhayanand-Baskar-Resume.pdf">Full work history in the PDF resume ↓</a>
+          <a className="inline-link" href="/Dhayanand-Baskar-Resume.pdf?v=8" download="Dhayanand-Baskar-Resume.pdf">Full work history in the PDF resume ↓</a>
         </section>
 
         <section className="content-section principles" aria-labelledby="principles-title">

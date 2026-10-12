@@ -17,7 +17,7 @@ This file is an internal editing guide. Do not link it from the website or the r
 
 - Put current and strongest work first.
 - Lead bullets with the most important signal: ownership, outcome, scale, or technical difficulty.
-- Keep the strongest numbers easy to find, especially `2M+`, `~70% P95`, `~60% P99`, `three days to four hours`, and `3B+ platform scale`.
+- Keep the strongest numbers easy to find, especially `4M+`, `~70% P95`, `~60% P99`, `three days to four hours`, and `3B+ platform scale`.
 - Use selective bolding for the signal, not entire sentences.
 
 ### One distinct signal per bullet
